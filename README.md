@@ -1,24 +1,5 @@
-# README
+# HOMEWARD FITNESS
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Homeward Fitness is a web application built to make working out at home more interactive and fun. The tool is designed to let fitness intructors post new workouts each week, then users can easily pick and choose which workouts to complete and log their results accordingly. Users can interact with other members through friend requests, leaderboards and custom fitness contests.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Check out the application at https://homewardfitness.herokuapp.com/
