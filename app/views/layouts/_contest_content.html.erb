@@ -1,0 +1,10 @@
+<% if @contests.length > 0 %>
+	<% @contests.each do |c| %>
+		<%= render partial: "layouts/contest_list_item", locals: {c: c} %>
+	<% end %>
+<% else %>
+	<li class="text-center">
+	<div class="top-pad">No contests to show...</div>
+	<div class="add-pad"><a class="btn btn-success btn-instr" href="/contests/new"><i class="fas fa-plus-circle"></i> Create a New Contest!</a></div>
+	</li>
+<% end %>

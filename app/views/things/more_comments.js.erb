@@ -1,0 +1,14 @@
+<% @comments.each do |c| %>
+	$("#comment-tbody-<%= params[:thing_id] %>").append('<%= j render partial: "comment", locals: {c: c, u: c, p: true, ts: params[:timestamp]} %>');
+	$('.reply-btn[data-id="<%= c.id %>"]').click(function(){$(this).siblings('.wait-container').removeClass('no-show')});
+	$('#comment-like-<%= c.id %>').click(function(){$(this).toggleClass('liked')});
+	$('.get-replies-<%= c.id %>').click(function(){$(this).replaceWith('<div id="reply-wc-<%= c.id %>" class="wait-container"><span></span><span></span><span></span><span></span></div>')});
+<% end %>
+$('tr.posted').fadeIn(300);
+<% if @new_off + 1 > @comment_count %>
+	$('#more-comments-<%= params[:thing_id] %>').replaceWith('<p class="text-muted text-small">No more comments</p>');
+<% else %>
+	$('#more-comments-<%= params[:thing_id] %>').replaceWith('<%= j render partial: "things/load_more_btn", locals: {tid: params[:thing_id], ts: params[:timestamp], o: @new_off} %>');
+	$('#more-comments-<%= params[:thing_id] %>').click(function(){$(this).replaceWith('<div id="wc-<%= params[:thing_id] %>" class="wait-container"><span></span><span></span><span></span><span></span></div>')});
+<% end %>
+$('.retrieve-likes').click(function(){$('#like-modal').modal('show')});

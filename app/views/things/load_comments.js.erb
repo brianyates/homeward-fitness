@@ -1,0 +1,15 @@
+$('#comment-target-<%= params[:thing_id] %>').replaceWith('<%= j render partial: "things/comment_form", locals: {thing_id: params[:thing_id], comment_count: params[:comment_count], comments: @comments} %>');
+$(".comment-input").keyup(function(){var s=$(this).val(),t=$(this).siblings(".comment-alert"),i=$(this).siblings('input[type="submit"]'),e=$(this).siblings(".mirror");e.text(s+" ");var h=e.width(),n=$(this).width()-24,a=Math.max(22*Math.ceil(h/n),22);$(this).height(a),s.length<251&&s.length>0?i.removeClass("disabled"):i.addClass("disabled"),s.length>240?(c=250-s.length,t.removeClass("no-show"),t.children(".count").replaceWith('<span class="count">'+c+"</span>")):t.addClass("no-show")});
+<% @comments.each do |c| %>
+	$('#comment-like-<%= c.id %>').click(function(){$(this).toggleClass('liked')});
+	$('#reply-btn-<%= c.id %>').click(function(){$(this).siblings('.wait-container').removeClass('no-show')});
+	$('#reply-wc-<%= c.id %>').click(function(){$(this).replaceWith('<div id="reply-wc-<%= c.id %>" class="wait-container"><span></span><span></span><span></span><span></span></div>')});
+<% end %>
+$('.retrieve-likes').click(function(){$('#like-modal').modal('show')});
+$('#more-comments-<%= params[:thing_id] %>').click(function(){
+	$(this).replaceWith('<div id="more-comments-<%= params[:thing_id] %>" class="wait-container"><span></span><span></span><span></span><span></span></div>')
+});
+$('.login-toggle').click(function(e){
+	e.stopPropagation();
+	$('#login-btn').dropdown('toggle');
+});

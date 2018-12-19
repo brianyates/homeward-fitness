@@ -1,0 +1,4 @@
+<% if @error_msg %>
+	var err = "<%= @error_msg %>";
+	$('#error-msg-signup p').replaceWith('<p><span>!</span>'+err+'</p>');
+<% end %>

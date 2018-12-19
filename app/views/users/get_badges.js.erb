@@ -1,0 +1,2 @@
+$('#badge-target-btn').replaceWith('<%= j render partial: "user_badges" %>');
+$('#badge-count').replaceWith('<div class="text-xbig"><%= j pluralize(@badges.length, "badge") + " earned" %></div>');

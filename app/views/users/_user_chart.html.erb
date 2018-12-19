@@ -1,0 +1,22 @@
+<div class="chart-container marg-bottom-20">
+	<div class="btn-options full-pad">
+		<div class="time-option dib">
+			<a role="button" id="past-week" class="active btn">Past Week</a>
+			<a role="button" id="past-30">Past 30 Days</a>
+			<a role="button" id="past-year">Past Year</a>
+		</div>
+		<div class="value-option dib">
+			<a role="button" id="minutes-btn" class="active">Time</a>
+			<a role="button" id="points-btn">Points</a>
+		</div>
+	</div>
+	<div class="text-right text-small add-pad-5"><span class="text-bold">Total:</span>
+		<span id="display-0" class="total-display no-show"><%= total_time(@totals.year_seconds) %></span>
+		<span id="display-1" class="total-display no-show"><%= number_with_delimiter(@totals.year_points) + " Fitness Point" %></span>
+		<span id="display-2" class="total-display no-show"><%= total_time(@totals.month_seconds) %></span>
+		<span id="display-3" class="total-display no-show"><%= number_with_delimiter(@totals.month_points) + " Fitness Points" %></span>
+		<span id="display-4" class="total-display"><%= total_time(@totals.week_seconds) %></span>
+		<span id="display-5" class="total-display no-show"><%= number_with_delimiter(@totals.week_points) + " Fitness Points" %></span>
+	</div>
+	<div id="chart-target"></div>
+</div>

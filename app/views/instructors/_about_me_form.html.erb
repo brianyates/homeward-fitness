@@ -1,0 +1,12 @@
+<div id="instructor_about_me" class="text-left">
+	<p class="text-bold text-big">About This Instructor:</p>
+	<%= form_for(@instructor, method: :patch, remote: true, url: url_for(controller: "instructors", action: "update", field: "about_me")) do |f| %>
+		<div class="field-container">
+			<%= f.text_area :about_me, class: "form-control bigger", placeholder: "Tell us about yourself..." %>
+		</div>
+		<div class="field-container add-pad">
+			<%= f.submit "Save Changes", class: "btn btn-main btn-instr" %>
+			<a class="btn btn-default btn-instr" id="cancel_about_me">Cancel</a>
+		</div>
+	<% end %>
+</div>

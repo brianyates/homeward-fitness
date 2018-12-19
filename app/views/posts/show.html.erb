@@ -1,0 +1,14 @@
+<%= render partial: "layouts/like_modal" %>
+<% unless current_user %>
+	<%= render partial: "layouts/login_modal" %>
+<% end %>
+<div class="main-container">
+	<% if @post %>
+		<h1 class="marg-bottom-20">Workout Results</h1>
+		<div class="m-auto m-width-550">
+			<%= render partial: "/posts/post", locals: {post_object: @post} %>
+		</div>
+	<% else %>
+		<h3>This post is private, or it does not exist</h3>
+	<% end %>
+</div>

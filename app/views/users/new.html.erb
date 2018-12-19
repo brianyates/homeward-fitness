@@ -1,0 +1,38 @@
+<%= content_for :title do %>
+	<title>Create an Account | Homeward Fitness</title>
+<% end %>
+<div class="main-container">
+	<h2 class="marg-bottom-20">Create an Account</h2>
+	<div class="big-signup">
+		<div class="social-btn-container">
+			<a href="/auth/facebook" class="btn btn-facebook width-100p text-big"><span class="float-left"><i class="fab fa-facebook"></i></span> Sign Up With Facebook</a>
+		</div>
+		<div class="social-btn-container">
+			<a href="/auth/google" class="btn btn-google width-100p text-big"><span class="float-left"><i class="fab fa-google-plus-square"></i></span> Sign Up With Google</a>
+		</div>
+		<div class="text-center or">
+			- OR -
+		</div>
+	</div>
+	<div class="form-container pad-top-0 m-width-550 grey-form rounded text-left">
+		<%= form_for(@user, method: :post, remote: true, url: url_for(controller: 'users', action: 'create')) do |f| %>
+			<div id="error-msg-signup" class="text-left"><p></p></div>
+			<div class="field-container">
+				<%= f.label nil, "Full Name:" %>
+				<%= f.text_field :name, class: "form-control", placeholder: "Enter your full name..." %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Email:" %>
+				<%= f.email_field :email, class: "form-control", placeholder: "Enter your email...", value: params[:email] %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Password:" %>
+				<%= f.password_field :password, class: "form-control", placeholder: "At least 8 characters..." %>
+			</div>
+			<div class="field-container text-muted terms text-left">By creating an account, you agree to our <a href="/legal-terms" target="_blank">Terms & Conditions</a>.</div>
+			<div class="field-container">
+				<%= f.submit "Create Account", id:"account-submit-btn", class:"btn btn-main" %>
+			</div>
+		<% end %>
+	</div>
+</div>

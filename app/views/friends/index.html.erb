@@ -1,0 +1,22 @@
+<% if current_user && @user %>
+	<% content_for :title do %>
+		<title><%= @user.name %>'s Fitness Friends | Homeward Fitness</title>
+	<% end %>
+	<div class="main-container">
+		<h2 class="m-width-1100 border-bottom"><a title="<%= @user.name %>" data-turbolinks="false" href="/users/<%= @user.id %>"><%= image_tag @user.image_path, class: "user-pic top-align" %></a> <%= @user.name %>'s Fitness Friends</h2>
+		<div class="m-width-1100 m-auto text-right marg-bottom-10">
+			<a role="button" data-toggle="modal" data-target="#invite-friends" class="btn btn-success btn-instr"><i class="fas fa-plus-circle"></i> Invite More Friends!</a>
+		</div>
+		<div class="m-auto m-width-1100 text-left">
+			<%= render partial: "friends/friend_index", locals: {friends: @friends, type: 1} %>
+		</div>
+	</div>
+<% elsif @user %>
+	<div class="main-container">
+		<%= not_logged_in %>
+	</div>
+<% else %>
+	<div class="main-container">
+		<h3>Oops! This member does not exist.</h3>
+	</div>
+<% end %>

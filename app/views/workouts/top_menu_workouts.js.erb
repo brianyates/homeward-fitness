@@ -1,0 +1,4 @@
+<% @workouts.each do |w| %>
+	$('#top-menu-list').append('<li><a class="<%= 'no-border' if w.active_id==6 %>" href="/workouts/<%= w.id %>"><%= image_tag w.image.thumb.url, class: "img-circle menu-img" %> <span>Weekly Workout <%= w.active_id %> - <%= w.workout_title %></span></a></li>');
+<% end %>
+$('#top-menu-workouts').remove();

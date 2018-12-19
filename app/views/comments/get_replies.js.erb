@@ -1,0 +1,12 @@
+$('#reply-wc-<%= params[:id] %>').replaceWith('<a class="toggle-replies text-muted text-bold" data-toggle="collapse" href="#reply-table-<%= params[:id] %>" role="button"><span class="dib"><i class="fas fa-caret-up"></i></span> <span class="words"></span> Replies</a>');
+<% @replies.each do |r| %>
+	$("#reply-tbody-<%= params[:id] %>").append('<%= j render partial: "comments/reply", locals: {c: r, u: r, p: true} %>');
+	$("#reply-like-<%= r.id %>").click(function(){$(this).toggleClass('liked');});
+	$('.subreply-btn[data-id="<%= r.id %>"]').click(function(){$(this).siblings('.wait-container').removeClass('no-show')});
+<% end %>
+$("#reply-table-<%= params[:id] %>").addClass('in');
+$('tr.posted').fadeIn(300);
+$('.extra-reply').remove();
+$('.retrieve-likes').click(function(){$('#like-modal').modal('show')});
+	
+	

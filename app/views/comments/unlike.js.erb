@@ -1,0 +1,10 @@
+$("#comment-like-<%= params[:id] %>").attr("href", "/comment-like/<%= params[:id] %>");
+$("#comment-like-<%= params[:id] %>").removeClass('loaded');
+<% if @like_count > 0 %>
+$("#comment-like-count-<%= params[:id] %>").replaceWith('<div class="dib" id="comment-like-count-<%= params[:id] %>">| <a data-remote="true" class="text-xsmall text-muted retrieve-likes" href="/get-comment-likes/<%= params[:id] %>"><%= j pluralize(@like_count, "Like") %></a></div>');
+<% else %>
+$("#comment-like-count-<%= params[:id] %>").replaceWith('<div class="dib" id="comment-like-count-<%= params[:id] %>"></div>');
+<% end %>
+$('.retrieve-likes').click(function(){$('#like-modal').modal('show')});
+	
+	

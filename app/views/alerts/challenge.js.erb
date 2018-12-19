@@ -1,0 +1,11 @@
+$('body').append('<div id="flash-container" class="notice-wrapper"><p>You challenged <%= @user.name %>!</p><div id="close-flash"><i class="fa fa-times" aria-hidden="true"></i></div></div>');
+$("div.notice-wrapper").slideDown(200, function(){
+	setTimeout(function(){ 
+		$("div.notice-wrapper").fadeOut("slow", function() { 
+			$("div.notice-wrapper").remove(); 
+		}); 
+	}, 4000);
+});
+$('[data-toggle="dropdown"]').parent().removeClass('open');
+$('.dropdown-backdrop').remove();
+$("div#close-flash").click(function(){$("div#flash-container").fadeOut("fast", function() {$("div#flash-container").remove()})});

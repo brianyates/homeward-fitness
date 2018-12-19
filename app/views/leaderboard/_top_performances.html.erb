@@ -1,0 +1,39 @@
+<table class="width-100p tw-table">
+	<tbody>
+		<% tp.each do |t| %>
+			<tr><td class="tw-<%= t.id %> tw-header add-pad-5 text-center" colspan="2"><a href="/workouts/<%= t.workout_id %>">Workout <%= t.id %> - <%= t.workout_title.upcase %></a></td></tr>
+			<% if t.workout_type == 1 %>
+				<tr>
+					<td class="no-results text-center lb-text text-muted" colspan="2">Top performance not available for this workout type.</td>
+				</tr>
+			<% else %>
+				<% if t.user_id.present? %>
+					<tr>
+						<td>
+							<div class="main-info lb-text">
+								<a href="/users/<%= t.user_id %>" class="marg-lr-5"><%= image_tag t.image_path, class: "user-pic big-pic" %></a>
+								<a href="/users/<%= t.user_id %>" class="text-xbig"><%= t.name %></a>
+							</div>
+						</td>
+						<td class="trophy-cell text-center"><div class="trophy-container-2" title="Best performance for this workout"><%= render partial: "leaderboard/trophy_1" %></div></td>
+					</tr>
+					<tr class="bg-lb info-row">
+						<td>
+							<div class="add-pad-5 lb-text">
+								<div class="dib add-pad-5"><span class="text-bold">Points: </span><%= number_with_delimiter(t.points) %></div>
+								<div class="dib add-pad-5"><span class="text-bold">Time: </span><%= total_time(t.seconds) %></div>
+							</div>
+						</td>
+						<td class="trophy-cell text-center">
+							<a class="btn btn-default text-small" href="/posts/<%= t.post_id %>">View Result</a>
+						</td>
+					</tr>
+				<% else %>
+					<tr>
+						<td class="no-results text-center lb-text text-muted" colspan="2">No results for this workout...yet</td>
+					</tr>
+				<% end %>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

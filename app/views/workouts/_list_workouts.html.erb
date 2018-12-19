@@ -1,0 +1,30 @@
+<% workouts.each_with_index do |w, i| %>
+	<% if i==0 || i==3 %>
+		<div class="row">
+	<% end %>
+		<div class="col-sm-4 current-section w-<%= i+1 %> t-<%= t %>">
+			<div class="cur-container m-width-500 m-auto">
+				<div class="top-section">
+					<div class="top-header">
+						<% if t==0 %>
+							<span>Weekly Workout <%= i+1 %></span><div class="w-timestamp"><%= w.workout_title.upcase %></div>
+						<% else %>
+							<span><%= w.workout_title %></span><div class="w-timestamp">Posted <%= w.created_at.in_time_zone('EST').strftime('%m/%d/%Y') %></div>
+						<% end %>
+					</div>
+				</div>
+				<div class="img-container">
+					<div class="img-overlay">
+						<div class="img-overlay-content full-pad text-left">
+							<%= render partial: "workout_data", locals: {w: w, t: 0} %>
+						</div>
+					</div>
+					<%= image_tag w.image.url %>
+				</div>
+				<a class="view-workout" href="/workouts/<%= w.id %>"><span>VIEW THIS WORKOUT</span></a>
+			</div>
+		</div>
+	<% if i==2 || i==5 || i==(c-1) %>
+		</div>
+	<% end %>
+<% end %>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<p style="font-size:16px;color:#333">Hey,</p>
+					<p style="font-size:16px;color:#333"><%= @name %> (<%= @email %>) just contacted us. <a href="<%= @email_domain %>/all-contacts">Check it out</a>.</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

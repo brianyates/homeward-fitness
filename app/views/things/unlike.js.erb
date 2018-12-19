@@ -1,0 +1,5 @@
+$("#like-btn-<%= params[:id] %>").attr("href", "/like/<%= params[:id] %>");
+$("#like-btn-<%= params[:id] %>").removeClass('loaded');
+$("#like-count-<%= params[:id] %>").text('<%= j pluralize(@like_count, "Like") %>');
+	
+	

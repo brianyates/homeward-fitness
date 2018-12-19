@@ -1,0 +1,26 @@
+$('#reply-target-<%= @reply.comment_id %>').replaceWith('<%= j render partial: "comments/reply_form", locals: {path: current_user.image_path, id: @reply.comment_id} %>');
+$('#reply-field-<%= @reply.comment_id %>').keyup(function(){
+	var a = $(this).val();
+	var b = $(this).siblings('.comment-alert');
+	var i = $(this).siblings('.reply-btns').children('input[type="submit"]');
+	var m = $(this).siblings('.mirror');
+	m.text(a+'\u00A0');
+	var mw = m.width();
+	var iw = $(this).width() - 24;
+	var h = Math.max((22*Math.ceil(mw/iw)), 22);
+	$(this).height(h);
+	if ((a.length < 251) && (a.length > 0)){i.removeClass('disabled')}
+	else{i.addClass('disabled')};
+	if (a.length > 240){
+		c = 250 - a.length;
+		b.removeClass('no-show');
+		b.children('.count').replaceWith('<span class="count">'+c+'</span>');
+	}
+	else{b.addClass('no-show')};
+});
+$('#cancel-reply-<%= @reply.comment_id %>').click(function(){
+	$(this).parent().parent().parent().replaceWith('<div id="reply-target-<%= @reply.comment_id %>" class="wait-container no-show add-pad"><span></span><span></span><span></span><span></span></div>');
+});
+$('#reply-field-<%= @reply.comment_id %>').focus();
+	
+	

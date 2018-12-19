@@ -1,0 +1,104 @@
+<% content_for :title do %>
+	<title><%= @workout_title %>  | Homeward Fitness</title>
+<% end %>
+<% content_for :og_info do %>
+	<meta property="og:title" content="<%= @workout_title %> | Homeward Fitness" />
+	<meta property="og:image" content="<%= @workout.image.url %>" />
+	<meta property="og:image:secure_url" content="<%= @workout.image.url %>" />
+<% end %>
+<%= render partial: "layouts/like_modal" %>
+<% unless current_user %>
+	<%= render partial: "layouts/login_modal" %>
+<% end %>
+<% if flash[:modal].present? %>
+	<div id="success-modal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title text-center text-info">Success!</h1>
+				</div>
+				<div class="modal-body text-center">
+					<h4 class="add-pad m-width-450 m-auto">Great job completing that workout! We've saved your workout results successfully. Now what?</h4>
+					<div class="text-center add-pad">
+						<a href="/posts/<%= flash[:modal] %>"class="btn btn-main">View My Post</a> 
+						<a href="/users/<%= current_user.id %>" class="btn btn-default">View My Profile</a>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<p class="dib marg-right-5 text-muted">Don't be shy! Share your achievement...</p>
+					<div class="dib">
+						<a title="Share on Facebook" class="btn btn-facebook text-big" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhomewardfitness.com%2Fworkouts%2F<%= params[:id] %>"><i class="fab fa-facebook"></i></a>
+						<a title="Share on Twitter" class="btn btn-twitter text-big" target="_blank" href="https://twitter.com/intent/tweet?text=I%20just%20completed%20one%20of%20this%20week's%20workouts%20on%20Homeward%20Fitness.%20Check%20it%20out!&url=https://homewardfitness.com/workouts/<%= params[:id] %>"><i class="fab fa-twitter"></i></a>
+						<a title="Share on Pinterest" class="btn btn-pinterest text-big" target="_blank" href="http://pinterest.com/pin/create/button?url=https%3A%2F%2Fhomewardfitness.com%2Fworkouts%2F<%= params[:id] %>&media=<%= u @workout.image.url %>&description=I%20just%20completed%20one%20of%20this%20week's%20workouts%20on%20Homeward%20Fitness.%20Check%20it%20out!"><i class="fab fa-pinterest"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>$('#success-modal').modal('show');</script>
+<% end %>
+<div class="main-container">
+	<h2 class="marg-bottom-20">
+		<%= @workout_title %>
+	</h2>
+	<div class="m-auto m-width-800 add-pad marg-bottom-10">
+		<div class="embed-responsive embed-responsive-16by9 workout-video">
+			<iframe class="workout-iframe embed-responsive-item" src="<%= @workout.video_url %>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+		</div>
+	</div>
+	<div class="m-auto m-width-800 text-left workout-info rounded">
+		<%= render partial: "workout_data", locals: {w: @workout, t: 1} %>
+	</div>
+	<% if current_user %>
+		<div class="m-auto m-width-800 text-left add-pad-2">
+			<a class="checkbox-container cursor-pointer text-center collapsed" id="checkbox" data-toggle="collapse" href="#results-container" role="button">
+				<div class="custom-checkbox dib rounded"><i class="fas fa-check"></i></div> <span class="dib">I completed this workout</span>
+			</a>
+		</div>
+		<div class="m-auto m-width-800 collapse" id="results-container">
+			<div class="small text-left bot-marg-5 text-muted">Great job completing that workout! Now finish up your post and submit your results!</div>
+			<%= render partial: "posts/post_form", locals: {post: @post, workout: @workout, type: 1} %>
+		</div>
+		<script>
+			var i = 1;
+			$('#checkbox').click(function(){
+				if(i){
+					var x = $(this).offset().top;
+					$('html, body').animate({scrollTop: x - 60}, 600);
+					i=0;
+				}
+				else{i=1};
+			});
+			<%= render partial: "posts/post_script", locals: {t: @workout.workout_type} %>
+		</script>
+	<% else %>
+		<div class="add-pad top-marg text-big text-info"><p class="m-auto m-width-800"><a role="button" class="cursor-pointer login-toggle">Log in</a> to submit workout results</p></div>
+	<% end %>
+	<div class="m-auto m-width-800 top-pad">
+		<div class="workout-action-info text-left top-marg-20">
+			<a data-remote="true" href="/get-likes/<%= @workout.thing_id %>" class="retrieve-likes" id="like-count-<%= @workout.thing_id %>"><%= pluralize(@workout.like_count, "Like") %></a>
+			|
+			<a id="comment-count-<%= @workout.thing_id %>" data-id="<%= @workout.thing_id %>" class="collapsed workout-collapse" data-toggle="collapse" href="#show-comments-<%= @workout.thing_id %>" role="button"><%= pluralize(@workout.comment_count, "Comment") %></a>
+		</div>
+		<div class="post-actions text-left">
+			<% if current_user %>
+				<% if thing_liked(@workout.thing_id) %>
+					<a id="like-btn-<%= @workout.thing_id %>" href="/unlike/<%= @workout.thing_id %>" data-remote="true" data-method="post" class="like-btn liked loaded"><span class="icon dib"><i class="fas fa-thumbs-up"></i></span><span class="desc"> Like</span></a>
+				<% else %>
+					<a id="like-btn-<%= @workout.thing_id %>" href="/like/<%= @workout.thing_id %>" data-remote="true" data-method="post" class="like-btn"><span class="icon dib text-big"><i class="fas fa-thumbs-up"></i></span><span class="desc"> Like</span></a>
+				<% end %>
+			<% else %>
+				<a class="cursor-pointer" data-toggle="modal" data-target="#login-modal"><span class="icon dib text-big"><i class="fas fa-thumbs-up"></i></span> <span class="desc"> Like</span></a>
+			<% end %>
+			<a class="collapsed workout-collapse" data-toggle="collapse" data-id="<%= @workout.thing_id %>" href="#show-comments-<%= @workout.thing_id %>" role="button">
+				<span class="text-big"><i class="fas fa-comment"></i></span> Comment
+			</a>
+		</div>
+		<div id="show-comments-<%= @workout.thing_id %>" class="collapse w-comment-container text-left">
+			<a id="comment-target-<%= @workout.thing_id %>" data-remote="true" href="<%= load_comments_path(thing_id: @workout.thing_id, comment_count: @workout.comment_count, timestamp: @timestamp) %>">
+				<div class="wait-container text-center"><span></span><span></span><span></span><span></span></div>
+			</a>
+		</div>
+	</div>
+</div>

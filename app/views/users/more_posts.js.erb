@@ -1,0 +1,10 @@
+<% @posts.each do |p| %>
+	$('#post-index-target').before('<%= j render partial: "/posts/post", locals: {post_object: p} %>');
+	$('#like-btn-<%= p.thing_id %>').click(function(){$(this).toggleClass('liked')});
+<% end %>
+$('#more-posts').replaceWith('<%= j link_to "", "/more-user-posts/#{params[:id]}?timestamp=#{params[:timestamp]}&offset=#{@new_off}&count=#{@count}", id: "more-posts", data: {remote: true, o: @new_off} %>');
+$('.retrieve-likes').click(function(){$('#like-modal').modal('show')});
+<% if @new_off + 1 > @count %>
+	$('#post-index-target').remove();
+	$(window).unbind('scroll');
+<% end %>

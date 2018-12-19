@@ -1,0 +1,26 @@
+<div class="main-container">
+	<h1 class="marg-bottom-20">Edit Badge</h1>
+	<div class="form-container rounded grey-form text-left m-auto m-width-500">
+		<%= form_for(@badge, method: :patch, url: url_for(controller: "admin", action: "update_badge")) do |f| %>
+			<div class="field-container">
+				<%= f.label nil, "Badge ID:" %>
+				<%= f.text_field :id, class: "form-control" %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Badge Name:" %>
+				<%= f.text_field :badge_name, class: "form-control" %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Badge Description:" %>
+				<%= f.text_area :badge_description, class: "form-control big" %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Image Path:" %>
+				<%= f.text_field :image_path, class: "form-control" %>
+			</div>
+			<div class="field-container">
+				<%= f.submit "Save Changes", class: "btn btn-purple" %>
+			</div>
+		<% end %>
+	</div>
+</div>

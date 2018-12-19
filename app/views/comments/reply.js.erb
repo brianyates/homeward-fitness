@@ -1,0 +1,7 @@
+if($('#reply-table-<%= @reply.comment_id %>').is(':hidden')){$('#reply-table-<%= @reply.comment_id %>').parent().append('<table class="reply-table extra-reply"><tbody><%= j render partial: "comments/reply", locals: {c: @reply, u: current_user, p: true} %></tbody></table>')}
+else{$("#reply-tbody-<%= @reply.comment_id %>").append('<%= j render partial: "comments/reply", locals: {c: @reply, u: current_user, p: true} %>')};
+$('tr.posted').fadeIn(300);
+$('#reply-target-<%= @reply.comment_id %>').replaceWith('<div id="reply-target-<%= @reply.comment_id %>" class="wait-container no-show add-pad"><span></span><span></span><span></span><span></span></div>');
+$('#subreply-target-<%= params[:reply_id] %>').replaceWith('<div id="subreply-target-<%=  params[:reply_id] %>" class="wait-container no-show add-pad"><span></span><span></span><span></span><span></span></div>');
+$('.subreply-btn[data-id="<%= @reply.id %>"]').click(function(){$(this).siblings('.wait-container').removeClass('no-show')});
+$('#reply-like-<%= @reply.id %>').click(function(){$(this).toggleClass('liked')});

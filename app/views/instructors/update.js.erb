@@ -1,0 +1,17 @@
+$('#instructor_<%= params[:field] %>').replaceWith('<%= j render partial: params[:field], locals: {t: 1} %>');
+$('body').append('<div id="flash-container" class="notice-wrapper"><p>Changes Saved!</p><div id="close-flash"><i class="fa fa-times" aria-hidden="true"></i></div></div>');
+$("div.notice-wrapper").slideDown(200, function(){setTimeout(function(){$("div.notice-wrapper").fadeOut("slow", function(){$("div.notice-wrapper").remove()})}, 4000)});
+$("div#close-flash").click(function(){$("div#flash-container").fadeOut("fast", function(){$("div#flash-container").remove()})});
+<% if params[:field]=="address" %>
+var lat = <%= @instructor.latitude %>;
+var lng = <%= @instructor.longitude %>;
+var map = new google.maps.Map(document.getElementById('gmap'));
+var marker = new google.maps.Marker({
+	position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+	map: map, 
+	animation: google.maps.Animation.DROP,
+});
+map.setZoom(7);
+map.setCenter({lat: lat, lng: lng});
+<% end %>
+$('.instr-edit').click(function(){$(this).replaceWith('<div class="wait-container dib middle-align"><span></span><span></span><span></span><span></span></div>')});

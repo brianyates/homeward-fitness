@@ -1,0 +1,27 @@
+<div class="bot-marg-5">
+	<% if current_user %>
+		<%= form_for(Comment.new, method: :post, remote: true, url: "/comment/#{thing_id}?timestamp=#{@timestamp}") do |f| %>
+			<div class="dib no-marg top-align"><%= image_tag current_user.image_path, class: "user-pic comment" %></div>
+			<%= f.text_area :comment, placeholder: "Add a comment...", class: "form-control width-adjust comment-input", id: "comment-field-#{thing_id}" %>
+			<div class="mirror"></div>
+			<%= f.submit "Post", class: "btn btn-main dib top-align disabled comment-submit", id: "comment-submit-#{thing_id}" %>
+			<div class="text-danger no-show small comment-alert"><span class="count">250</span> <span>characters remaining</span></div>
+		<% end %>
+	<% else %>
+		<div class="text-center"><a role='button' class='cursor-pointer login-toggle'>Log in</a> to post a comment</div>
+	<% end %>
+</div>
+<div>
+	<table class="comment-table">
+		<tbody id="comment-tbody-<%= thing_id %>">
+			<% comments.each do |c| %>
+				<%= render partial: "things/comment", locals: {c: c, u: c, p: false, ts: @timestamp} %>
+			<% end %>
+		</tbody>
+	</table>
+	<% if comment_count.to_i > 5 %>
+		<div class="text-center top-pad">
+			<%= render partial: "things/load_more_btn", locals: {tid: thing_id, ts: @timestamp, o: 5} %>
+		</div>
+	<% end %>
+</div>

@@ -1,0 +1,8 @@
+$("#comment-tbody-<%= @comment.thing_id %>").prepend('<%= j render partial: "comment", locals: {c: @comment, u: current_user, p: true, ts: params[:timestamp]} %>');
+$("#comment-field-<%= @comment.thing_id %>").val('');
+$("#comment-field-<%= @comment.thing_id %>").height(22);
+$('tr.posted').fadeIn(300);
+$('#comment-submit-<%= @comment.thing_id %>').addClass('disabled');
+$('#comment-count-<%= @comment.thing_id %>').text('<%= j pluralize(@comment_count, "Comment") %>');
+$('#reply-btn-<%= @comment.id %>').click(function(){$(this).siblings('.wait-container').removeClass('no-show')});
+$('#comment-like-<%= @comment.id %>').click(function(){$(this).toggleClass('liked')});

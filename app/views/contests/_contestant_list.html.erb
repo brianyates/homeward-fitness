@@ -1,0 +1,9 @@
+<div class="text-left">
+	<div class="text-right text-muted text-small neg-marg-10 grey-bord-bottom"><%= pluralize(@contestants.length, "contestant") %></div>
+	<% @contestants.each do |c| %>
+		<div class="add-pad-5 grey-bord-bottom">
+			<a href="/users/<%= c.user_id %>" class="marg-lr-5"><%= image_tag c.image_path, class: "user-pic big-pic" %></a>
+			<a href="/users/<%= c.user_id %>" class="text-xbig"><%= c.name %></a>
+		</div>
+	<% end %>
+</div>

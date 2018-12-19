@@ -1,0 +1,26 @@
+<% if @posts && @posts.length > 0 %>
+	<%= render partial: "layouts/like_modal" %>
+	<div class="main-container">
+		<h2 class="m-width-800 border-bottom"><a title="<%= @posts[0].name %>" data-turbolinks="false" href="/users/<%= @posts[0].user_id %>"><%= image_tag @posts[0].image_path, class: "user-pic top-align" %></a> All Completed Workouts</h2>
+		<div class="m-width-800 m-auto text-right list-workout-opts"><a class="active">Default View</a> <a href="/users/<%= params[:id] %>/workouts/table">Table View</a></div>
+		<div class="m-auto m-width-600">
+			<% @posts.each do |p| %>
+				<%= render partial: "/posts/post", locals: {post_object: p} %>
+			<% end %>
+			<% if @count > 5 %> 
+				<div id="post-index-target">
+					<div class="text-center wait-container"><span></span><span></span><span></span><span></span></div>
+					<a data-remote="true" data-o="5" id="more-posts" href="/more-user-posts/<%= params[:id] %>?timestamp=<%= @timestamp %>&offset=5&count=<%= @count %>"></a>
+				</div>
+			<% end %>
+		</div>
+	</div>
+<% else %>
+	<div class="main-container">
+		<% if current_user %>
+			<h3>This account is private, or there are no results to show</h3>
+		<% else %>
+			<h3>You need to <a role='button' class='cursor-pointer login-toggle'>log in</a> to view individual results</h3>
+		<% end %>
+	</div>
+<% end %>

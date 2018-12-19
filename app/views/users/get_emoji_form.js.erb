@@ -1,0 +1,8 @@
+$('#get-emoji-form').replaceWith('<%= j render partial: "emoji_form" %>');
+$('.emoji-btn').click(function(){
+	var v = $(this).data('value');
+	$('#emoji_value').val(v);
+	$('.emoji-btn').removeClass('selected');
+	$(this).addClass('selected');
+	$('#emoji_submit').removeClass('disabled');
+});

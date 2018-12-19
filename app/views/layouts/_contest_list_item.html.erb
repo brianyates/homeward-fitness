@@ -1,0 +1,33 @@
+<li id="contest-list-item-<%= c.contestant_id %>">
+	<% if c.status == 0 %>
+		<div class="alert-link unread">
+			<div class="dib">
+				<div class="text-info"><i class="fas fa-crown"></i></div>
+			</div>
+			<div class="dib w-225"><a href="/users/<%= c.inviter_id %>"><%= c.inviter %></a> has invited you to join a Fitness Contest: <%= c.contest_title %>
+				<div class="alert-time"><%= time_ago_in_words(c.created_at) %> ago</div>
+				<div class="confirm-contest-btns" id="cotest-btns-<%=c.id%>">
+					<a class="btn btn-main" href="/accept-contest/<%= c.contest_id %>" data-method="post" data-remote="true">Accept</a>
+					<a class="btn btn-default" href="/decline-contest/<%= c.contest_id %>" data-method="post" data-remote="true">Decline</a>
+				</div>
+			</div>
+		</div>
+	<% else %>
+		<div class="alert-link">
+			<div class="dib">
+				<div class="text-info"><i class="fas fa-crown"></i></div>
+			</div>
+			<div class="dib w-225">Fitness Contest: <span class="text-bold"><%= c.contest_title %></span>
+				<% if Date.today > c.end_date %>
+					<div class="alert-time"><span class="text-warning">CONTEST HAS ENDED</span></div>
+				<% elsif Date.today < c.start_date %>
+					<div class="alert-time"><span class="text-info">CONTEST STARTS IN <%= pluralize((c.start_date.to_date - Date.today).to_i, "day").upcase %></span></div>
+				<% else %>
+					<div class="alert-time"><span class="text-success text-bold">IN PROGRESS</span></div>
+				<% end %>
+				<div class="alert-time text-small">Starts: <%= c.start_date.strftime('%m/%d/%Y') %> | Ends: <%= c.end_date.strftime('%m/%d/%Y') %></div>
+				<div class="top-marg"><a class="btn btn-info smaller-btn width-100p" href="/contests/<%= c.contest_id %>" >View Contest</a></div>
+			</div>
+		</div>
+	<% end %>
+</li>

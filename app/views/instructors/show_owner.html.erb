@@ -1,0 +1,13 @@
+<% if @instructor %>
+	<%= content_for :title do %>
+		<title><%= @instructor.instructor_name %> | Homeward Fitness</title>
+	<% end %>
+	<%= render partial: "avatars/avatar_cropper", locals: {type: "instructor"} %>
+	<div class="main-container">
+		<%= render partial: "instructor_profile", locals: {t: 1, o: true} %>
+	</div>
+<% else %>
+	<div class="main-container">
+		<h3>Sorry, either this page has been removed or you don't have access to it</h3>
+	</div>
+<% end %>

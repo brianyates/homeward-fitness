@@ -1,0 +1,8 @@
+$('#top-performers-target').append('<%= j render partial: "/leaderboard/top_performers", locals: {results: @top_performers} %>');
+<% if @new_off + 1 > @result_count %>
+	$('#load-performers').remove();
+	$('#top-performers-target').append('<tr><td colspan="2" class="text-muted text-small text-center full-pad">No more results to show</td></tr>');
+<% else %>
+	$('#load-performers').replaceWith('<a class="btn btn-default text-small top-marg" id="load-performers" data-remote="true" href="<%= "/load-top-performers?active_cutoff=#{params[:active_cutoff]}&timestamp=#{params[:timestamp]}&offset=#{@new_off}&filter_type=#{params[:filter_type]}&result_count=#{@result_count}" %>">Load More Results</a>');
+<% end %>
+$('a#load-performers').click(function(){$(this).replaceWith('<div id="load-performers" class="wait-container full-pad text-center"><span></span><span></span><span></span><span></span></div>')});

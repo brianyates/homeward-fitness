@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<h2 style="color:#333;margin-bottom:30px">Welcome to Homeward Fitness, <%= @user.name.split(" ")[0] %>!</h2>
+					<p style="font-size:16px;color:#333">
+					Hi <%= @user.name.split(" ")[0] %>,
+					</p>
+					<p style="font-size:16px;color:#333">
+					Thank you for joining Homeward Fitness! We look forward to helping you stay active with our home workout videos and fitness community. When you're ready, check out your profile settings to help ensure we can provide you with an optimal experience.
+					</p>
+					<a style="color:#fff;background-color:#62adcc;border-color:#5ca4c1;border-radius:30px;padding:12px;font-size:18px;display:block;margin:30px auto;min-width:250px;width:70%;text-decoration:none;text-align:center;"
+					href="<%= @email_domain %>/settings">View My Settings</a>
+					<p style="font-size:16px;color:#333">If you ever have any questions, please feel free to email us at support@homewardfitness.com.</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: false} %>
+		</div>
+	</body>
+</html>

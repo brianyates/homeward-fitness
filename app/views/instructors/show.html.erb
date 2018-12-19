@@ -1,0 +1,10 @@
+<%= content_for :title do %>
+	<title><%= @instructor.instructor_name %> | Homeward Fitness</title>
+<% end %>
+<div class="main-container">
+	<% if @instructor %>
+		<%= render partial: "instructor_profile", locals: {t: 2, o: @owner} %>
+	<% else %>
+		<h3>Sorry, either this page has been removed or you don't have access to it</h3>
+	<% end %>
+</div>

@@ -1,0 +1,36 @@
+<% content_for :title do %>
+	<title>Create a New Contest | Homeward Fitness</title>
+<% end %>
+<div class="main-container">
+	<% if current_user %>
+		<h1 class="margin-bottom-20">Create a New Contest</h1>
+		<div class="form-container grey-form m-width-600 text-left rounded">
+			<%= form_for(@contest, method: :post, url: url_for(controller: "contests", action: "create")) do |f| %>
+				<div class="field-container">
+					<%= f.label nil, "Contest Title:" %>
+					<%= f.text_field :contest_title, class: "form-control", placeholder: "Contest Title (30-character limit)" %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Who can invite contest participants?" %>
+					<%= f.select :owner_invite_only, [["All Contestants", 0], ["Owner Only (Me)", 1]], prompt: "Select an option..." %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Contest Start Date:" %>
+					<%= f.text_field :start_date, class: "form-control date-picker", placeholder: "mm/dd/yyyy", readonly: "readonly" %>
+				</div>
+				<div class="field-container no-show" id="end_date_container">
+					<%= f.label nil, "Contest End Date:" %>
+					<%= f.text_field :end_date, class: "form-control date-picker", placeholder: "mm/dd/yyyy", readonly: "readonly" %>
+				</div>
+				<div class="field-container">
+				<div class="text-muted text-small add-pad-5">*All contest times are held in Eastern Standard Time</div>
+				</div>
+				<div class="field-container">
+					<%= f.submit "Create Contest", class: "btn btn-main disabled", id: "create_contest" %>
+				</div>
+			<% end %>
+		</div>
+	<% else %>
+		<%= not_logged_in %>
+	<% end %>
+</div>

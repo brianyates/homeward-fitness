@@ -1,0 +1,9 @@
+<div class="dropdown">
+	<a class="btn btn-main dropdown-toggle<%= ' smaller-btn' if type==1 %>" data-toggle="dropdown" id="is-friend-<%= friend_obj.id %>"><i class="fas fa-check"></i> Fitness Friends</a>
+	<div class="friend-opt-container dropdown-menu<%= ' higher-menu' if type==1 %>">
+		<div class="triangle<%= ' alt-triangle' if type==0 %>"><div></div></div>
+		<a href="/cheer/<%= friend_obj.friend_id %>" data-remote="true" data-method="post"><span class="dib"><i class="far fa-smile"></i></span> Cheer</a>
+		<a href="/challenge/<%= friend_obj.friend_id %>" data-remote="true" data-method="post"><span class="dib"><i class="fas fa-exclamation-circle"></i></span> Challenge</a>
+		<a href="/unfriend/<%= friend_obj.id %>" data-method="delete" data-confirm="Are you sure you want to remove this friend?"><span class="dib"><i class="fas fa-times-circle"></i></span> Unfriend</a>
+	</div>
+</div>

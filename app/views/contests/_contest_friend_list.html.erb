@@ -1,0 +1,29 @@
+<div>
+	<% if @friend_list.length > 0 %>
+		<table class="contestant-friend-list width-100p">
+			<tbody>
+				<% @friend_list.each do |f| %>
+					<tr>
+						<td><a href="/users/<%= f.friend_id %>"><%= image_tag f.image_path, class: "user-pic big-pic" %></a></td>
+						<td><a href="/users/<%= f.friend_id %>"><%= f.name %></td>
+						<td>
+							<% if f.status.present? %>
+								<% if f.status == 2 %>
+									<a role="button" class="btn btn-main disabled">Accepted</a>
+								<% elsif f.status == 1 %>
+									<a role="button" class="btn btn-danger disabled">Declined</a>
+								<% else %>
+									<a role="button" class="btn btn-main disabled">Invited</a>
+								<% end %>
+							<% else %>
+								<a href="/invite-contestant/<%= params[:contest_id] %>/<%= f.friend_id %>" data-remote="true" data-method="post" class="btn btn-main c-invite-btn">Invite</a>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	<% else %>
+		<div class="text-center add-pad text-muted">No friends to show</div>
+	<% end %>
+</div>

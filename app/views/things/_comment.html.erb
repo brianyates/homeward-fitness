@@ -1,0 +1,45 @@
+<tr class="comment-<%= c.id %>-row grey-border<%= ' posted' if p %>">
+	<td><%= image_tag u.image_path, class: "user-pic" %></td>
+	<td><a href="/users/<%= c.user_id %>" class="text-big"><%= u.name %></a> <span class="timestamp"> - <%= time_ago_in_words(c.created_at) %> ago</td>
+	<td class="trash">
+		<% if current_user && c.user_id==current_user.id %>
+			<a class="text-muted delete-comment text-xsmall" data-remote="true" data-confirm="Are you sure you want to delete this comment?" rel="nofollow" data-method="delete" href="/comment/<%= c.id %>?timestamp=<%= ts %>">
+				<i class="fas fa-trash-alt"></i>
+			</a>
+		<% end %>
+	</td>
+</tr>
+<tr class="comment-<%= c.id %>-row<%= ' posted' if p %>">
+	<td></td>
+	<td class="comment-cell" colspan="2"><%= c.comment %></td>
+</tr>
+<tr class="comment-<%= c.id %>-row<%= ' posted' if p %>">
+	<td></td>
+	<td colspan="2" class="pad-bottom-2">
+		<% if current_user %>
+			<% if comment_liked(c.id) %>
+				<a id="comment-like-<%= c.id %>" class="text-xsmall text-muted dib marg-right-5 like-btn liked loaded" href="/comment-unlike/<%= c.id %>" data-method="post" data-remote="true"><span class="icon dib"><i class="fas fa-thumbs-up"></i></span> <span class="desc"> Like</span></a>	
+			<% else %>
+				<a id="comment-like-<%= c.id %>" class="text-xsmall text-muted dib marg-right-5 like-btn" href="/comment-like/<%= c.id %>" data-method="post" data-remote="true"><span class="icon dib"><i class="fas fa-thumbs-up"></i></span> <span class="desc"> Like</span></a>
+			<% end %>
+			<a id="reply-btn-<%= c.id %>" class="text-xsmall text-muted dib reply-btn" href="/reply/<%= c.id %>" data-remote="true" data-id="<%= c.id %>"><span><i class="fas fa-reply"></i></span> Reply</a>
+		<% else %>
+			<a class="text-xsmall text-muted dib marg-right-5 cursor-pointer" data-toggle="modal" data-target="#login-modal"><span class="icon dib"><i class="fas fa-thumbs-up"></i></span> <span class="desc"> Like</span></a>
+			<a class="text-xsmall text-muted dib cursor-pointer" data-toggle="modal" data-target="#login-modal"><span><i class="fas fa-reply"></i></span> Reply</a>
+		<% end %>
+		<div class="dib" id="comment-like-count-<%= c.id %>">
+			<% if c.like_count > 0 %>
+				| <a data-remote="true" class="text-muted text-xsmall retrieve-likes" href="/get-comment-likes/<%= c.id %>"><%= pluralize(c.like_count, "Like") %></a>
+			<% end %>
+		</div>
+		<div id="reply-target-<%= c.id %>" class="wait-container no-show add-pad"><span></span><span></span><span></span><span></span></div>
+		<% @r = c.reply_count %>
+		<% if @r > 0 %>
+			<div class="top-marg"><a id="reply-wc-<%= c.id %>" class="text-bold get-replies get-replies-<%= c.id %>" href="/get-replies/<%= c.id %>" data-remote="true">View <%= pluralize(@r, "Reply") %></a></div>
+		<% end %>
+		<div id="reply-table-<%= c.id %>" class="collapse">
+			<table class="reply-table"><tbody id="reply-tbody-<%= c.id %>"></tbody></table>
+		</div>
+	</td>
+</tr>
+	

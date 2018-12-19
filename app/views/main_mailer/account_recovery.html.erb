@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<h2 style="color:#333;margin-bottom:30px">Password Reset Requested</h2>
+					<p style="font-size:16px;color:#333">
+						Hi <%= @user.name.split(" ")[0] %>,
+					</p>
+					<p style="font-size:16px;color:#333">
+						We received a request to reset the password for <%= @user.email %>. If you submitted this request, click the link below to reset your password. 
+					</p>
+					<a style="color:#fff;background-color:#62adcc;border-color:#5ca4c1;border-radius:30px;padding:12px;font-size:18px;display:block;margin:30px auto;min-width:250px;width:70%;text-decoration:none;text-align:center;"
+					href="<%= @email_domain %>/account-recovery/password-reset?id=<%= @user.id %>&token=<%= @token %>&tid=<%= @tid%>">Reset My Password</a>
+					<p style="font-size:16px;color:#333">If you did not initiate this request, please disregard this email. We will keep your account safe.</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: false} %>
+		</div>
+	</body>
+</html>

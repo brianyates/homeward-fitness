@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<h2 style="color:#333;margin-bottom:30px"><%= @user.name %> Liked Your Workout</h2>
+					<p style="font-size:16px;color:#333">
+						Hi <%= @recipient.name.split(" ")[0] %>,
+					</p>
+					<p style="font-size:16px;color:#333">
+						People are admiring your work! <%= @user.name %> liked your workout post. To view your post, click the link below.
+					</p>
+					<a style="color:#fff;background-color:#62adcc;border-color:#5ca4c1;border-radius:30px;padding:12px;font-size:18px;display:block;margin:30px auto;min-width:250px;width:70%;text-decoration:none;text-align:center;"
+					href="<%= @email_domain %>/posts/<%= @post_id %>">View My Post</a>
+					<p style="font-size:16px;color:#333">Your fitness friend,</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: true, uid: @recipient.id, aid: @token_1, bid: @token_2, email_pref: 8} %>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,13 @@
+<% if params[:type].present? %>
+	$('#respond-btn-<%= @friend.id %>').parent().replaceWith('<div class="top-pad text-danger text-bold">Friend request declined</div>');
+<% else %>
+	$('#confirm-btns-<%= @friend.id%>').replaceWith('<div class="top-pad text-danger text-bold">Friend request declined</div>');
+	<% if @request_count > 0 %>
+		var r = '<%= @request_count %>';
+		$('#friend-circle').replaceWith('<div id="friend-circle">'+r+'</div>');
+	<% else %>
+		$('#friend-circle').remove();
+	<% end %>
+<% end %>
+	
+	

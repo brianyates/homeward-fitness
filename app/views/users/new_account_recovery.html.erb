@@ -1,0 +1,41 @@
+<%= content_for :title do %>
+	<title>Account Recovery | Homeward Fitness</title>
+<% end %>
+<% if flash[:modal].present? %>
+	<div id="account-recovery-modal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title text-center text-info">Email Sent!</h1>
+				</div>
+				<div class="modal-body text-center">
+					<h4 class="add-pad m-width-450 m-auto">An email was sent to the email address you submitted. To reset your password, click the link found in that email.</h4>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" type="button" class="close" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>$('#account-recovery-modal').modal('show');</script>
+<% end %>
+<div class="main-container">
+	<% if current_user %>
+		<h3>To reset your password while logged in, please go to <a href="/change-password">this page</a>.</h3>
+	<% else %>
+		<h2 class="marg-bottom-20">Account Recovery</h2>
+		<p class="text-muted">Forgot your password? Enter your email below and we'll send you a link to reset your password.</p>
+		<div class="form-container grey-form m-width-600 text-left">
+			<%= form_for(:account_recovery, method: :post, url: url_for(controller: "users", action: "send_account_recovery")) do |f| %>
+				<div class="field-container">
+					<%= f.label nil, "Email Address:" %>
+					<%= f.email_field :email, class: "form-control", placeholder: "Enter your email address...", id: "contest_staging_email" %>
+				</div>
+				<div class="field-container">
+					<%= f.submit "Send Recovery Email", class: "btn btn-main disabled", id: "contest-staging-btn" %>
+				</div>
+			<% end %>
+		</div>
+	<% end %>
+</div>

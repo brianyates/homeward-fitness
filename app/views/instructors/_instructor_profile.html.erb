@@ -1,0 +1,39 @@
+<div class="m-auto m-width-800">
+	<% if o %>
+		<div class="text-right top-pad">Instructor profile as viewed by
+			<div class="dib">
+				<%= form_for(:view, html: {id: "change_view_form"}, url: url_for(controller: "instructors", action: "change_view", id: params[:id])) do |f| %>
+					<%= f.select :option, [["You", 1], ["Everyone", 2]], selected: t %>
+					<%= f.submit "Submit", class: "no-show" %>
+				<% end %>
+			</div>
+		</div>
+	<% end %>
+	<div class="full-pad">
+		<div class="profile-header">
+			<div class="profile-header-container">
+				<div class="profile-header-pic middle-align">
+					<%= image_tag @instructor.image_path, class: "instructor-img" %>
+					<% if t==1 %>
+						<div><%= render partial: "avatars/avatar_form", locals: {action: "change_instructor"} %></div>
+					<% end %>
+				</div>
+				<div class="profile-header-info middle-align">
+					<h1><%= @instructor.instructor_name %></h1>
+					<p class="text-info text-big">Homeward Instructor Since <%= @instructor.created_at.strftime('%B %d, %Y') %></p>
+					<%= render partial: "website_url", locals: {t: t} %>
+				</div>
+			</div>
+		</div>
+		<%= render partial: "about_me", locals: {t: t} %>
+		<a class="async-load-btn text-left" id="instructor-map-target" href="/get-instructor-map/<%= params[:id] %>?t=<%= t %>" data-remote="true">
+			<div class="add-pad wait-container"><span></span><span></span><span></span><span></span></div>
+		</a>
+		<div class="text-left">
+			<% if @instructor.workout_count > 0 %>
+				<p class="text-bold text-big">Workouts By This Instructor:</p>
+				<%= render partial: "workout_list" %>
+			<% end %>
+		</div>
+	</div>
+</div>

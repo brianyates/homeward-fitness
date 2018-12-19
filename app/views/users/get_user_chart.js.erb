@@ -1,0 +1,85 @@
+$('#user-chart-target').replaceWith('<%= j render partial: "users/user_chart" %>');
+google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(prepData);
+function prepData(){
+	var yearMins = new google.visualization.DataTable(), yearPts = new google.visualization.DataTable(), monthMins = new google.visualization.DataTable(), monthPts = new google.visualization.DataTable(), weekMins = new google.visualization.DataTable(), weekPts = new google.visualization.DataTable();
+	var dataTableArray = [yearMins, yearPts, monthMins, monthPts, weekMins, weekPts];
+	var sumValues = [0, 0, 0, 0, 0, 0];
+	yearMins.addColumn('date', 'Date');
+	yearMins.addColumn('number','Minutes');
+	yearPts.addColumn('date','Date');
+	yearPts.addColumn('number','Fitness Points');
+	monthMins.addColumn('date', 'Date');
+	monthMins.addColumn('number','Minutes');
+	monthPts.addColumn('date','Date');
+	monthPts.addColumn('number','Fitness Points');
+	weekMins.addColumn('string', 'Date');
+	weekMins.addColumn('number','Minutes');
+	weekPts.addColumn('string','Date');
+	weekPts.addColumn('number','Fitness Points');
+	var minOptions = {
+		animation: {duration: 1000, easing: 'out', 'startup': true},
+		chartArea: {'width': '98%', 'height': '85%', 'top': '5%'},
+		vAxis: {'minValue': 0, 'textPosition': 'in'},
+		legend: {'position': 'none' },
+		colors: ['#71acd6'],
+	};
+	var pntOptions = {
+		animation: {duration: 1000, easing: 'out', 'startup': true},
+		chartArea: {'width': '98%', 'height': '85%', 'top': '5%'},
+		legend: {'position': 'none' },
+		vAxis: {'minValue': 0, 'textPosition': 'in'},
+		colors: ['#a973bf']
+	};
+	dArr = <%= raw @chart_data %>;
+	dArrLen = dArr.length;
+	for(i=0;i<dArrLen;i++){
+		yearMins.addRow([new Date(dArr[i][0], dArr[i][1], dArr[i][2], 0, 0, 0), dArr[i][3]]);
+		yearPts.addRow([new Date(dArr[i][0], dArr[i][1], dArr[i][2], 0, 0, 0), dArr[i][4]]);
+		if(i > dArrLen - 31){
+			monthMins.addRow([new Date(dArr[i][0], dArr[i][1], dArr[i][2], 0, 0, 0), dArr[i][3]]);
+			monthPts.addRow([new Date(dArr[i][0], dArr[i][1], dArr[i][2], 0, 0, 0), dArr[i][4]]);
+			if (i > dArrLen - 8){
+				weekMins.addRow([dArr[i][5], dArr[i][3]]);
+				weekPts.addRow([dArr[i][5], dArr[i][4]]);
+			}
+		}
+	};
+	var chart = new google.visualization.ColumnChart(document.getElementById('chart-target'));
+	var optionValue = minOptions;
+	var pointValue = 0;
+	var timeValue = 2;
+	function chartStuff(obj, t, p, o){
+		obj.addClass('active');
+		optionValue = o;
+		timeValue = t;
+		pointValue = p;
+		$('.total-display').addClass('no-show');
+		$('#display-'+(t*2 + p)).removeClass('no-show');
+		chart.draw(dataTableArray[(t*2 + p)], o);
+	}
+	$('#minutes-btn').click(function(){
+		$('#points-btn').removeClass('active');
+		chartStuff($(this), timeValue, 0, minOptions);
+	});
+	$('#points-btn').click(function(){
+		$('#minutes-btn').removeClass('active');
+		chartStuff($(this), timeValue, 1, pntOptions);
+	});
+	$('#past-week').click(function(){
+		$('.time-option a').removeClass('active');
+		chartStuff($(this), 2, pointValue, optionValue);
+	});
+	$('#past-30').click(function(){
+		$('.time-option a').removeClass('active');
+		chartStuff($(this), 1, pointValue, optionValue);
+	});
+	$('#past-year').click(function(){
+		$('.time-option a').removeClass('active');
+		chartStuff($(this), 0, pointValue, optionValue);
+	});
+	$(window).resize(function(){
+		chart.draw(dataTableArray[(timeValue*2 + pointValue)], optionValue);
+	});
+	chart.draw(dataTableArray[4], optionValue);
+};

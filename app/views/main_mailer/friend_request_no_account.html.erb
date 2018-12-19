@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<h2 style="color:#333;margin-bottom:30px">Someone was thinking of you...</h2>
+					<p style="font-size:16px;color:#333">
+						Hi there,
+					</p>
+					<p style="font-size:16px;color:#333">
+						Look who's popular! <%= @requestor %> wants to be your friend on Homeward Fitness. What is Homeward Fitness you ask? It's an online community
+						designed to give people more flexibility and enjoyment out of working out. We post new home workout videos every week for you to do wherever, whenever.
+						Do the workouts, record your results and collaborate with our community. Best of all, it's 100% free! We hope to see you there soon.
+					</p>
+					<a style="color:#fff;background-color:#62adcc;border-color:#5ca4c1;border-radius:30px;padding:12px;font-size:18px;display:block;margin:30px auto;min-width:250px;width:70%;text-decoration:none;text-align:center;"
+					href="<%= @email_domain %>/signup?email=<%= @email %>">Click to Join</a>
+					<p style="font-size:16px;color:#333">Your fitness friend,</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: false} %>
+		</div>
+	</body>
+</html>

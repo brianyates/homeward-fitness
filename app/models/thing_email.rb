@@ -1,0 +1,2 @@
+class ThingEmail < ApplicationRecord
+end

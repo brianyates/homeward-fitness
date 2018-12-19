@@ -1,0 +1,73 @@
+<% if @contest %>
+	<% content_for :title do %>
+		<title>Fitness Contest - <%= @contest.contest_title %> | Homeward Fitness</title>
+	<% end %>
+	<%= render partial: "layouts/like_modal" %>
+	<div id="invite-contestants-modal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title text-info pad-left-19">Invite Contestants</h1>
+				</div>
+				<div class="form-container">
+					<%= form_for(ContestStaging.new, method: :post, remote: true, url: url_for(controller: "contest_stagings", action: "invite_by_email")) do |f| %>
+						<%= f.label nil, "Invite by Email:" %>
+						<%= f.email_field :email, class: "form-control email-invite dib staging_email_input", placeholder: "friend@example.com", id: "contest_staging_email" %>
+						<%= f.submit "Invite", class: "btn btn-success disabled dib email-invite-btn", id: "contest-staging-btn" %>
+					<% end %>
+					<div class="text-success add-pad-5 text-bold inv-s-parent"><div class="invite-sent">Invitation Sent!</div></div>
+				</div>
+				<div class="text-center marg-bottom-10 list-workout-opts">- OR -</div>
+				<div class="full-pad">
+					<div class="text-bold">Invite Fitness Friends:</div>
+					<a href="/get-contest-friend-list/<%= params[:contest_id] %>" id="contestant-friend-list" data-remote="true">
+						<div class="wait-container add-pad-30 text-center"><span></span><span></span><span></span><span></span></div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="nav-filler"></div>
+	<div class="full-height">
+		<div class="cool-bg text-center marg-bottom-20">
+			<div class="cool-overlay auto-height o-<%= @contest.id % 3 %>">
+				<div class="cool-head">Fitness Contest</div>
+				<%= render partial: "contest_title" %>
+				<div id="main-contest-info">
+					<div>Starts: <%= @contest.start_date.strftime('%m/%d/%Y') %> | Ends: <%= @contest.end_date.strftime('%m/%d/%Y') %></div>
+					<% if @contest.end_date < Date.today %>
+						<div class="top-pad-5">THIS CONTEST HAS ENDED</div>
+					<% elsif Date.today < @contest.start_date %>
+						<div class="top-pad-5">CONTEST STARTS IN <%= pluralize((@contest.start_date.to_date - Date.today).to_i, "day").upcase %></span></div>
+					<% else %>
+						<div class="top-pad-5">IN PROGRESS</div>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div class="main-width container-fluid">
+			<% if (@contest.end_date < Date.today) && @top_performers[0] %>
+				<div class="champ-container text-center">
+					<div class="champ-header text-info">WINNER</div>
+					<div>
+						<a href="/users/<%= @top_performers[0].user_id %>" class="middle-align marg-lr-5 dib"><%= image_tag @top_performers[0].image_path, class: "user-pic big-pic" %></a>
+						<div class="dib middle-align"><a href="/users/<%= @top_performers[0].user_id %>"><%= @top_performers[0].name %></a></div>
+						<div class="dib trophy-container" title="1st Place"><%= render partial: "leaderboard/trophy_1" %></div>
+					</div>
+				</div>
+			<% else %>
+				<% if (@contest.owner_invite_only || (@contest.owner_id == current_user.id)) %>
+					<div class="text-right marg-bottom-10">
+						<a role="button" data-toggle="modal" data-target="#invite-contestants-modal" class="btn btn-success"><i class="fas fa-user-plus"></i> Invite More Contestants!</a>
+					</div>
+				<% end %>
+			<% end %>
+			<%= render partial: "contest_body" %>
+		</div>
+	</div>
+<% else %>
+	<div class="main-container">
+		<h3>Oops! Either this contest doesn't exist or you're not a contestant in it.</h3>
+	</div>
+<% end %>

@@ -1,0 +1,12 @@
+<div class="text-center">
+	<% (1..12).each do |i| %>
+		<a role="button" class="emoji-btn<%= ' selected' if current_user.emoji_value==i %>" data-value="<%= i %>"><%= image_tag "emojis/emoji_#{i}.svg" %></a>
+	<% end %>
+	<%= form_for(:emoji, method: :post, html: {id: "emoji_form" }, url: url_for(controller: "users", action: "set_emoji")) do |f| %>
+		<%= f.hidden_field :emoji_value, id: "emoji_value" %>
+		<div class="modal-footer">
+			<%= f.submit "Submit", class: "btn btn-main dib disabled", id: "emoji_submit" %>
+			<a role="button" class="btn btn-default dib" data-dismiss="modal">Cancel</a>
+		</div>
+	<% end %>
+</div>

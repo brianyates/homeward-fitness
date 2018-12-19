@@ -1,0 +1,111 @@
+<% content_for :title do %>
+	<title>Account Settings | Homeward Fitness</title>
+<% end %>
+<%= render partial: "avatars/avatar_cropper", locals: {type: "user"} %>
+<div id="emoji-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-info">Select an Emoji</h3>
+			</div>
+			<a id="get-emoji-form" href="/get-emoji-form" data-remote="true">
+				<div class="wait-container add-pad-2 text-center"><span></span><span></span><span></span><span></span></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="main-container">
+	<% if @user %>
+		<h2 class="marg-bottom-20">Account Settings</h2>
+		<% if @user.email_validated == false %>
+			<div class="m-auto m-width-550 bg-warning full-pad marg-bottom-20">
+				<div class="text-left">We noticed that you have not validated your email address yet. Please let us know your email is legit by clicking the link in the email we sent you upon signing up. If you did not receive an email, click the link below.</div>
+				<div class="add-pad-5"><a href="/resend-verification-email" data-method="post" class="btn btn-warning">Resend Email</a></div>
+				<script>$('.btn-warning').click(function(){$(this).addClass('disabled')});</script>
+			</div>
+		<% end %>
+		<div class="form-container grey-form m-width-550 text-left marg-bottom-20 rounded">
+			<div class="text-center">
+				<%= image_tag @user.image_path, class: "user-pic header-pic" %>
+			</div>
+			<% unless @user.provider.present? %>
+				<div>
+					<%= render partial: "avatars/avatar_form", locals: {action: "change_user"} %>
+					<div class="text-center text-muted text-small neg-marg-5">- OR -</div>
+					<div class="text-center"><a id="open-emoji-modal" class="text-small text-muted cursor-pointer" data-toggle="modal" data-target="#emoji-modal">Use an Emoji Profile Picture</a></div>
+				</div>
+			<% end %>
+			<%= form_for(@user, method: :patch, url: url_for(controller: "users", action: "update")) do |f| %>
+				<div id="error-msg" class="text-left"><p></p></div>
+				<% if @user.provider == "facebook" %>
+					<div class="text-center"><span class="btn-facebook add-pad-5 text-small"><i class="fab fa-facebook"></i>  <span style="padding-left:3px">Account created with Facebook</span></span></div>
+					<div class="text-center add-pad"><a class="text-muted text-small" href="/internal-signup">Click to create account without Facebook</a></div>
+				<% elsif @user.provider == "google" %>
+					<div class="text-center"><span class="btn-google add-pad-5 text-small"><i class="fab fa-google-plus-square"></i>  <span style="padding-left:3px">Account created with Google</span></span></div>
+					<div class="text-center add-pad"><a class="text-muted text-small" href="/internal-signup">Click to create account without Google</a></div>
+				<% else %>
+					<div class="field-container">
+						<%= f.label nil, "Full Name:" %>
+						<%= f.text_field :name, class: "form-control" %>
+					</div>
+					<div class="field-container">
+						<%= f.label nil, "Email:" %>
+						<%= f.text_field :email, class: "form-control" %>
+					</div>
+				<% end %>
+				<div class="field-container">
+					<%= f.label nil, "What is your gender?" %>
+					<%= f.select :gender, [["Not Specified", 0], ["Male", 1], ["Female",2], ["Other", 3]] %>
+				</div>
+				<div class="field-container label-inline">
+					<%= f.label nil, "Who can view your profile and workout posts?" %> 
+					<div class="text-info info-bubble" role="button">
+						<div class="tooltip-text text-small">Even if your account is public, only members with Homeward Fitness accounts will be able to view your profile. If your account is not public, you will not be eligible for our <a class="text-lightblue" href="/leaderboard">Leaderboard</a>.</div>
+						<i class="fas fa-info-circle"></i>
+					</div>
+					<%= f.select :privacy_setting, [["Everyone", 0], ["Only my friends and me", 1], ["Only me", 2]] %>
+				</div>
+				<div class="field-container">
+					<a href="/email-preferences" class="text-muted small">Change My Email Preferences</a>
+					<% unless @user.provider.present? %>
+						<div class="top-pad-5">
+							<a href="/change-password" class="text-muted small">Change My Password</a>
+						</div>
+					<% end %>
+				</div>
+				<div class="field-container top-pad">
+					<%= f.submit "Save Changes", class: "btn btn-main", id: "account-edit-btn" %>
+				</div>
+			<% end %>
+		</div>
+		<div class="text-center add-pad-2"><a data-toggle='collapse' href="#hidden-opt" class="collapsed btn btn-default">More Options <span class="flip-icon dib text-muted"><i class="fas fa-caret-up"></i></span></a></div>
+		<div id="hidden-opt" class="collapse">
+			<%= link_to "Delete Account", "/delete-user", method: :delete, class:"btn btn-danger", data: {confirm: "Are you sure you want to delete your account? This cannot be undone!"} %>
+		</div>
+		<% unless @user.provider.present? %>
+			<script>
+					$("#account-edit-btn").click(function(e) {
+						e.preventDefault();
+						$("#edit_user input").removeClass("bad-input");
+						var a = $("#user_name"), b = $("#user_email")
+						if ((/^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$/.test(a.val())===false)){
+							a.addClass('bad-input');
+							a.focus();
+							$('#error-msg p').replaceWith('<p><span>!</span>Please enter your full name!</p>');
+						}
+						else if ((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(b.val())===false)){
+							b.addClass('bad-input');
+							b.focus();
+							$('#error-msg p').replaceWith('<p><span>!</span>Please enter a valid email!</p>');
+						}
+						else{$(".edit_user").submit()};
+					});
+					$("#edit_user input").change(function(){
+						$(this).removeClass('bad-input');
+					});
+			</script>
+		<% end %>
+	<% else %>
+		<%= not_logged_in %>
+	<% end %>
+</div>

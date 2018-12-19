@@ -1,0 +1,22 @@
+<div class="main-container">
+	<% if is_admin? %>
+		<h2 class="marg-bottom-20">New Instructor</h2>
+		<div class="form-container grey-form m-width-800 m-auto text-left">
+			<%= form_for(@instructor, method: :post, url: url_for(controller: "instructors", action: "create")) do |f| %>
+				<div class="field-container">
+					<%= f.label nil, "Instructor Name:" %>
+					<%= f.text_field :instructor_name, class: "form-control" %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Image Path:" %>
+					<%= f.text_field :image_path, class: "form-control" %>
+				</div>
+				<div class="field-container">
+					<%= f.submit "Create Instructor", class: "btn btn-main" %>
+				</div>
+			<% end %>
+		</div>	
+	<% else %>
+		<h3>Sorry, you're not authorized to view this page.</h3>
+	<% end %>
+</div>

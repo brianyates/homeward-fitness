@@ -1,0 +1,22 @@
+<div class="main-container">
+	<% if is_admin? %>
+		<h2 class="marg-bottom-20">Invite Owner</h2>
+		<div class="form-container grey-form m-width-800 m-auto text-left">
+			<%= form_for(@instructor_token, method: :post, url: url_for(controller: "instructors", action: "create_invite")) do |f| %>
+				<div class="field-container">
+					<%= f.label nil, "Instructor:" %>
+					<%= f.select :instructor_id, @instructors, prompt: "Select an instructor..." %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Email Address:" %>
+					<%= f.email_field :email, class: "form-control", placeholder: "Enter an email address..." %>
+				</div>
+				<div class="field-container">
+					<%= f.submit "Invite Owner", class: "btn btn-main" %>
+				</div>
+			<% end %>
+		</div>	
+	<% else %>
+		<h3>Sorry, you're not authorized to view this page.</h3>
+	<% end %>
+</div>

@@ -1,0 +1,12 @@
+<div class="add-pad" id="reply-target-<%= id %>">
+	<%= form_for(Reply.new, method: :post, remote: true, url: "/reply/#{id}") do |f| %>
+		<div class="dib no-marg top-align"><%= image_tag path, class: "user-pic comment" %></div>
+		<%= f.text_area :comment, placeholder: "Post a reply...", class: "form-control reply-input comment-input", id: "reply-field-#{id}" %>
+		<div class="mirror"></div>
+		<div class="reply-btns">
+		<a id="cancel-reply-<%= id %>" class="text-muted dib marg-right-10 cursor-pointer">Cancel</a>
+		<%= f.submit "Post", class: "btn btn-main dib disabled" %>
+		</div>
+		<div class="text-danger no-show small comment-alert"><span class="count">250</span> <span>characters remaining</span></div>
+	<% end %>
+</div>

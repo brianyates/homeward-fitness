@@ -1,0 +1,17 @@
+<div class="main-container">
+	<% if @post %>
+		<h1 class="marg-bottom-20">Edit Results</h1>
+		<div class="text-left m-width-800 m-auto">
+			<p><span class="text-bold">Workout: </span> <a href="/workouts/<%= @workout.id %>"><%= @workout.workout_title %></a></p>
+			<p><span class="text-bold">Completed On: </span><%= @post.created_at.in_time_zone('EST').strftime('%B %d, %Y') %></p>
+			<p><span class="text-bold">Total Fitness Points Earned: </span><%= @post.results.sum(:total_points) %></p>
+			<div class="text-right add-pad-5"><a class="text-muted text-small" href="/posts/<%= @post.id %>">Back to View Post</a></div>
+		</div>
+		<%= render partial: "posts/post_form", locals: {post: @post, workout: @workout, type: 2} %>
+		<script>
+			<%= render partial: "posts/post_script", locals: {t: @workout.workout_type} %>
+		</script>
+	<% else %>
+		<%= not_authorized %>
+	<% end %>
+</div>

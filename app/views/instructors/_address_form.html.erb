@@ -1,0 +1,11 @@
+<div id="instructor_address" class="text-left">
+	<%= form_for(@instructor, method: :patch, html: {id: "instr_form_address"}, remote: true, url: url_for(controller: "instructors", action: "update", field: "address")) do |f| %>
+		<div class="field-container">
+			<%= f.text_field :address, class: "form-control instr-input", id: "instr_input_address", placeholder: "Enter an address..." %>
+		</div>
+		<div class="field-container add-pad">
+			<%= f.submit "Save Changes", class: "btn btn-main btn-instr", id: "instr_submit_address" %>
+			<a class="btn btn-default btn-instr" id="cancel_address">Cancel</a>
+		</div>
+	<% end %>
+</div>

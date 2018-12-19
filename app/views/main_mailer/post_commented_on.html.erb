@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<p style="font-size:16px;color:#333">
+						Hi <%= @recipient.name.split(" ")[0] %>,
+					</p>
+					<p style="font-size:16px;color:#333">
+						People are talking about your work! <%= @user.name %> commented on your workout post.
+					</p>
+					<div style="padding:5px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd; margin-bottom: 20px">
+						<div style="font-size:16px;color:#333;font-weight:bold;">
+							<a href="<%= @email_domain %>/users/<%= @user.id %>" style="text-decoration:none">
+								<% unless @user.image_path.last(4) == ".svg" %>
+									<%= image_tag @user.image_path, width:"42px", height:"42px", style:"margin-right:5px;border-radius:50%;vertical-align:middle;" %>
+								<% else %>
+									<div style="width: 42px;height: 42px;background-color: #5ca4c1;color: #fff;text-align: center;font-size: 28px;line-height: 42px;vertical-align: middle;display: inline-block;margin-right: 5px;border-radius: 50%;"><%= @user.name[0,1].upcase %></div>
+								<% end %>
+							</a>
+							<%= @user.name %>
+						</div>
+						<p style="font-size:16px;color:#333;padding-left:50px;">
+							<%= @comment %>
+						</p>
+					</div>
+					<a style="color:#fff;background-color:#62adcc;border-color:#5ca4c1;border-radius:30px;padding:12px;font-size:18px;display:block;margin:30px auto;min-width:250px;width:70%;text-decoration:none;text-align:center;"
+					href="<%= @email_domain %>/posts/<%= @post_id %>">View My Post</a>
+					<p style="font-size:16px;color:#333">Your fitness friend,</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: true, uid: @recipient.id, aid: @token_1, bid: @token_2, email_pref: 2} %>
+		</div>
+	</body>
+</html>

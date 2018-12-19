@@ -1,0 +1,16 @@
+<% if friends.length > 0 %>
+	<% friends.each do |f| %>
+		<div class="friend-container">
+			<div class="dib middle-align full-pad">
+				<%= image_tag f.image_path, class: "user-pic friend-pic" %>
+			</div>
+			<div class="dib text-left middle-align friend-subcontainer">
+				<a class="text-xbig" href="/users/<%= f.friend_id %>"><%= f.name %></a>
+				<p class="marg-bottom-5"><%= number_with_delimiter(f.workout_count) +" "+"workout".pluralize(f.workout_count) %> completed</p>
+				<%= render partial: "friends/friend_options", locals: {friend_obj: f, type: type} %>
+			</div>
+		</div>
+	<% end %>
+<% else %>
+	<p class="text-center">No fitness friends to show</p>
+<% end %>

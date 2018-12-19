@@ -1,0 +1,12 @@
+<div class="text-left marg-bottom-20" id="instructor_about_me">
+	<% if @instructor.about_me.present? %>
+		<p class="text-bold text-big">About This Instructor:
+			<% if t==1 %>
+				<a class="text-info marg-left-5 instr-edit" title="Edit your 'About Me' info" data-remote="true" href="/instructors/<%= params[:id] %>/owner/edit?field=about_me"><i class="fas fa-edit"></i></a>
+			<% end %>
+		</p>
+		<div class="text-big"><%= simple_format(@instructor.about_me) %></div>
+	<% elsif t==1 %>
+		<a class="btn btn-info instr-edit btn-instr" data-remote="true" href="/instructors/<%= params[:id] %>/owner/edit?field=about_me"><i class="fas fa-plus-circle"></i> Add an 'About Me' Section</a>
+	<% end %>
+</div>

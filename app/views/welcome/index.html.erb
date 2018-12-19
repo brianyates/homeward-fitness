@@ -1,0 +1,76 @@
+<div id="home-page" class="home-pic">
+	<div id="home-top-text">
+		<p class="big">Workout Wherever, Whenever</p>
+		<p>Join our fitness community and exercise on your own time using home workout videos. Always 100% free.</p>
+	</div>
+	<div id="learn-more" class="text-center"><a class="cursor-pointer rounded">LEARN MORE</a></div>
+</div>
+<div class="container-fluid text-center" id="scroll-to">
+	<div class="row icon-row white-bg">
+		<div class="home-row-container m-auto">
+			<div class="col-sm-12 text-center"><h1 class="home-header">We Make Fitness Simple</h1></div>
+			<div class="col-sm-4 icon-section">
+				<div class="content-wrapper">
+					<div><%= image_tag "home_icon_1.svg", width:"150px", height:"150px" %></div>
+					<h3 class="icon-header">Complete Our Workouts</h3>
+					<p class="home-text">We post six new workouts every week. Do any of them whenever you want, as often as you like.</p>
+				</div>
+			</div>
+			<div class="col-sm-4 icon-section">
+				<div class="content-wrapper">
+					<div><%= image_tag "home_icon_2.svg", width:"150px", height:"150px" %></div>
+					<h3 class="icon-header">Post Your Results</h3>
+					<p class="home-text">Take pride in your efforts! Record your workout results for yourself and others to see, if you choose to do so.</p>
+				</div>
+			</div>
+			<div class="col-sm-4 icon-section">
+				<div class="content-wrapper">
+					<div><%= image_tag "home_icon_3.svg", width:"150px", height:"150px" %></div>
+					<h3 class="icon-header">Track Your Progress</h3>
+					<p class="home-text">Review all the workouts you've completed and see how you have progressed over time.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 home-pic pos-relative no-pad" id="home-pic-1">
+			<div class="overlay">
+				<h1 class="home-header">Try Something New</h1>
+				<p class="home-text m-auto">Homeward Fitness provides a fresh take on fitness. With new batches of workouts to choose from every week, you'll always find different and exciting ways to challenge yourself. Even at home.</p>
+				<a class="btn btn-inverse home-btn" href="/weekly-workouts">View This Week's Workouts</a>
+			</div>
+		</div>
+	</div>
+	<div class="row home-row-3">
+		<div class="home-col col-sm-6 no-pad">
+			<div class="content-wrapper">
+				<h1 class="home-header">Compete and Collaborate</h1>
+				<h4>Share your results and see how other members are doing. Using our Fitness Contests and Weekly Leaderboard, a little friendly competition can help push you to reach your fitness goals.</h4>
+				<a href="/leaderboard" class="btn home-btn home-btn-2">View Our Leaderboard</a>
+			</div>
+		</div>
+		<div class="home-col col-sm-6 no-pad"><%= image_tag "home_image_2.jpeg", class: "width-100p" %></div>
+	</div>
+	<div class="row white-bg">
+		<div class="col-sm-12 no-pad home-pic" id="home-pic-3">
+			<div class="overlay">
+				<h1 class="home-header">Join Our Community</h1>
+				<p class="home-text m-auto">Come be a part of our growing network of fitness friends. We'd love to help you get more enjoyment out of exercising with our unique spin on home workouts. Get started today!</p>
+				<a class="btn btn-main home-btn" href="/signup">Sign Up For Free</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).on('turbolinks:load', function(){
+		navClass();
+		$(window).scroll(function() {
+			navClass();
+		});
+		function navClass(){
+			var winTop = $(window).scrollTop();
+			if (winTop > 10) {$('nav.hn').removeClass("home-nav")}
+			else {$('nav.hn').addClass("home-nav")};
+		};
+	});
+</script>

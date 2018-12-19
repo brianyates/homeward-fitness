@@ -1,0 +1,21 @@
+<div class="main-container">
+	<% if is_admin? %>
+		<h1>Update Active Workouts</h1>
+		<div class="form-container m-width-550 text-left grey-form">
+			<%= form_for(:active, method: :post, url: url_for(controller: "workouts", action: "update_active"))do |f| %>
+				<% @active_workouts.each do |a| %>
+					<div class="field-container">
+						<%= f.label nil, "Active Workout #{a.id}" %>
+						<%= f.select a.id, @workouts, selected: a.workout_id %>
+					</div>
+				<% end %>
+				<div class="field-container">
+					<%= f.check_box :run_leaderboard_job %> <span class="text-big top-align">Run Leaderboard Notification Job?</span>
+				</div>
+				<div class="field-container"><%= f.submit "UPDATE WORKOUTS", class: "btn btn-main" %></div>
+			<% end %>
+		</div>
+	<% else %>
+		<%= unauthorized %>
+	<% end %>
+</div>

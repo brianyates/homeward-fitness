@@ -1,0 +1,69 @@
+<div class="form-container m-width-800 grey-form text-left">
+	<%= form_for(post, method: (type==1 ? :post : :patch), url: url_for(controller: "posts", action: (type==1 ? "create" : "update")), html: {id: "post-form"}) do |f| %>
+		<% if workout.workout_type==1 %>
+		<% elsif workout.workout_type==2 %>
+			<% if workout.custom_note.present? %>
+				<p class="text-small"><%= workout.custom_note %></p>
+			<% else %>
+				<p>How did you do?</p>
+			<% end %>
+			<% if type==2 %>
+				<% post.results_with_exercises.each_with_index do |ex, i| %>
+					<input type="hidden" name="post[results_attributes][<%= i %>][id]" id="post_result_id_<%= i %>" value="<%= ex.id %>"></input>
+					<div class="spinner-container dib">
+						<input value="<%= ex.reps %>" placeholder="<%= ex.exercise_description + "s" %>" type="tel" data-units="<%= ex.exercise_description %>" data-max="<%= ex.reps_per_round.present? ? ex.reps_per_round : 999  %>" class="form-control custom-spinner" name="post[results_attributes][<%= i %>][reps]" id="post_result_reps_<%= i %>"></input>
+					</div>
+				<% end %>
+			<% else %>
+				<% workout.exercises.each_with_index do |ex, i| %>
+					<input type="hidden" name="post[results_attributes][<%= i %>][exercise_id]" id="post_result_exercise_id_<%= i %>" value="<%= ex.id %>"></input>
+					<div class="spinner-container dib">
+						<input placeholder="<%= ex.exercise_description + "s" %>" type="tel" data-units="<%= ex.exercise_description %>" data-max="<%= ex.reps_per_round %>" class="form-control custom-spinner" name="post[results_attributes][<%= i %>][reps]" id="post_result_reps_<%= i %>"></input>
+					</div>
+				<% end %>
+			<% end %>
+		<% elsif workout.workout_type==3 %>
+			<p>What was your time?</p>
+			<div class="spinner-container dib"><%= f.telephone_field :minutes, class: "form-control custom-spinner", placeholder: "Minutes", value: (((post.seconds / 60) % 60) if type==2), data: {max: 120, units: "Minute"} %></div>
+			<div class="spinner-container dib"><%= f.telephone_field :seconds, class: "form-control custom-spinner", placeholder: "Seconds", value: ((post.seconds % 60) if type==2), data: {max: 59, units: "Second"} %></div>
+		<% end %>
+		<%= f.text_area :comment, class: "form-control big", placeholder: "Add a comment (optional)" %>
+		<div class="text-left text-danger no-show small" id="alert"><span id="count">250</span> <span>characters remaining</span></div>
+		<div class="small text-muted top-marg bot-marg-5">Share a picture or video link (optional):</div>
+		<div>
+			<div class="dib top-align">
+				<% if post.image.url.present? %>
+					<a id="pic-input" class="btn btn-picture disabled" title="Upload a picture or GIF"><i class="fas fa-camera"></i></a>
+					<div class="dib">
+						<span id="pic-value" class="text-big"><%= post.image_identifier %></span>
+						<a title="Remove this file" id="remove-pic" class="marg-left-10 cursor-pointer text-muted dib"><i class="fas fa-times-circle"></i></a>
+					</div>
+				<% else %>
+					<a id="pic-input" class="btn btn-picture<%= ' no-show' if post.video_url.present? %>" title="Upload a picture or GIF"><i class="fas fa-camera"></i></a>
+					<div class="dib">
+						<span id="pic-value" class="text-big"></span>
+						<a title="Remove this file" id="remove-pic" class="marg-left-10 cursor-pointer text-muted dib no-show"><i class="fas fa-times-circle"></i></a>
+					</div>
+				<% end %>
+				<div id="file-errors" class="text-bold top-marg text-danger"></div>
+				<%= f.file_field :image, class: "no-show", accept: "image/jpg,image/png,image/jpeg,image/gif" %>
+				<%= f.hidden_field :delete_image, id: "delete_post_image" %>
+			</div>
+			<div id="yt-input" class="input-group dib<%= ' no-show' if post.image.url.present? %><%= ' closed' unless post.video_url.present? %>">
+				<%= f.text_field :video_url, class: "form-control", placeholder: "YouTube or Vimeo URL" %>
+				<div class="input-group-btn">
+					<a class="btn btn-picture" id="video-btn" role="button" title="Share a link to a YouTube or Vimeo video">
+						<span id="orig-icon"><i class="fas fa-video"></i></span>
+						<span id="youtube-icon"><i class="fab fa-youtube"></i></span>
+						<span id="vimeo-icon"><i class="fab fa-vimeo"></i></span>
+					</a>
+				</div>
+			</div>
+			<a id="remove-vid" title="Remove this video" class="dib text-muted<%= ' no-show' unless post.video_url.present? %>"><i class="fas fa-times-circle"></i></a>
+		</div>
+		<div id="error-msg-post" class="text-right"><p></p></div>
+		<div class="field-container text-right">
+			<%= f.submit (type==1 ? "Submit Results" : "Submit Changes"), class: "btn btn-main width-auto", id: "post-submit-btn" %>
+		</div>
+	<% end %>
+</div>

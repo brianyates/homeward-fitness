@@ -1,0 +1,134 @@
+<nav class="<%= 'home-nav hn' if params[:controller]=='welcome' %>">
+	<a class="nav-link" id="menu-btn"><i class="fas fa-bars"></i> <span class="menu-span">Menu</span></li></a>
+		<a class="hf-logo main-logo" href="/" title="Homeward Fitness">
+			<%= image_tag "logo_image.svg" %>
+			<div class="dib">
+				<div class="logo-1">homeward</div>
+				<div class="logo-2">fitness</div>
+			</div>
+		</a>
+	<ul id="left-menu">
+		<li><a title="Leaderboard" href="/leaderboard" class="nav-link"><div class="nav-icon dib"><i class="fas fa-trophy"></i></div> Leaderboard</a></li>
+		<li><a title="Newsfeed" href="/newsfeed" class="nav-link"><div class="nav-icon dib"><i class="fas fa-newspaper"></i></div> Newsfeed</a></li>
+		<li><a title="Live Classes" href="/live-classes" class="nav-link"><div class="nav-icon dib"><i class="fas fa-desktop"></i></div> Live Classes</a></li>
+		<li class="pad-right-0"><a title="Weekly Workouts" class="nav-link" href="/weekly-workouts"><div class="nav-icon dib"><i class="far fa-calendar-alt"></i></div> Weekly Workouts</a></li>
+		<li class="dropdown-btn custom-btn"><a id="top-menu-caret" class="dropdown-toggle text-big cursor-pointer" data-toggle="dropdown"><i class="fas fa-caret-down"></i></a>
+			<ul id="top-menu-list" class="dropdown-menu workout-menu default-menu text-left">
+				<a id="top-menu-workouts" href="/top-menu-workouts" data-remote="true">
+					<div class="wait-container text-center add-pad-20"><span></span><span></span><span></span><span></span></div>
+				</a>
+			</ul>
+		</li>
+	</ul>
+	<% if current_user %>
+		<ul id="right-menu">
+			<% if is_admin? %>
+				<%= render partial: "layouts/admin_nav" %>
+			<% end %>
+			<li class="dropdown">
+				<% @cr = contest_requests %>
+				<a class="dropdown-toggle nav-link" title="Fitness Contests" id="contest-menu-btn" data-toggle="dropdown">
+					<div class="nav-icon dib">
+						<% if @cr > 0 %>
+							<div id="contest-circle"><%= @cr %></div>
+						<% end %>
+						<i class="fas fa-crown"></i>
+					</div>
+				</a>
+				<ul id="contest-menu" class="dropdown-menu text-left">
+					<div class="alt-menu-header">Fitness Contests  <span class="text-right dib"><a class="text-small" href="/contests/new">Create a New Contest</a></span></div>
+					<a id="contest-menu-target" href="/get-contests" data-remote="true">
+						<div class="wait-container text-center full-pad"><span></span><span></span><span></span><span></span></div>
+					</a>
+				</ul>
+			</li>
+			<li class="dropdown">
+				<% @fr = friend_requests %>
+				<a class="dropdown-toggle nav-link" title="Fitness Friend Requests" id="friend-menu-btn" data-toggle="dropdown">
+					<div class="nav-icon dib">
+						<% if @fr > 0 %>
+							<div id="friend-circle"><%= @fr %></div>
+						<% end %>
+						<i class="fas fa-users"></i>
+					</div>
+				</a>
+				<ul id="friend-menu" class="dropdown-menu text-left">
+					<div class="alt-menu-header">Friend Requests  <span class="text-right dib"><a class="text-small" href="/friends/<%= current_user.id %>">View All Friends</a></span></div>
+					<a id="friend-menu-target" href="/get-friend-requests" data-remote="true">
+						<div class="wait-container text-center full-pad"><span></span><span></span><span></span><span></span></div>
+					</a>
+				</ul>
+			</li>
+			<li class="dropdown">
+				<% @ua = unread_alerts %>
+				<a class="dropdown-toggle nav-link" title="Alerts" id="alerts-btn" data-toggle="dropdown">
+					<div class="nav-icon dib">
+						<% if @ua > 0 %>
+							<div id="unread-circle"><%= @ua %></div>
+						<% end %>
+						<i class="fas fa-bell"></i>
+					</div>
+				</a>
+				<ul id="alert-menu" class="dropdown-menu text-left">
+					<div class="alt-menu-header">Alerts <span class="text-right dib"><a class="text-small" href="/read-alerts" data-remote="true" data-method="patch">Mark All As Read</a></span></div>
+					<a id="alert-menu-target" href="/get-alerts" data-remote="true">
+						<div class="wait-container text-center full-pad"><span></span><span></span><span></span><span></span></div>
+					</a>
+				</ul>
+			</li>
+			<li class="dropdown">
+				<a class="dropdown-toggle nav-link" title="Hey there, <%= current_user.name.split(" ")[0] %>!" data-toggle="dropdown"><%= image_tag current_user.image_path, class: "user-pic nav-pic" %></a>
+				<ul class="dropdown-menu default-menu text-left account-menu">
+					<li><a href="/users/<%= current_user.id %>" title="My Profile"><div class="nav-icon dib"><i class="fas fa-user"></i></div> My Profile</a></li>
+					<% if current_user.instructor_id.present? %>
+						<li><a href="/instructors/<%= current_user.instructor_id %>/owner" title="Instructor Profile"><div class="nav-icon dib"><i class="fas fa-address-card"></i></div> Instructor Profile</a></li>	
+					<% end %>
+					<li><a href="/settings" title="Account Settings"><div class="nav-icon dib"><i class="fas fa-cog"></i></div> Account Settings</a></li>
+					<li><a class="no-border" href="/logout" title="Log Out" rel="nofollow" data-method="delete"><div class="nav-icon dib"><i class="fas fa-sign-out-alt"></i></div> Log Out</a></li>
+				</ul>
+			</li>
+		</ul>
+	<% else %>
+		<ul id="right-menu">
+			<li class="dropdown">
+				<a title="Log In" class="dropdown-toggle nav-link" id="login-btn" data-toggle="dropdown"><i class="fas fa-sign-in-alt"></i> <span class="menu-span">Log In</span></a>
+				<div class="dropdown-menu account-menu">			
+					<div id="login-carousel" class="carousel" data-ride="carousel" data-interval="false">
+						<div class="carousel-inner">
+							<div class="item active">
+								<div class="form-container"><%= render partial: "users/login_form" %></div>
+							</div>
+							<% unless params[:controller] == 'users' && params[:action] == 'new' %>
+								<div class="item">
+									<div class="form-container">
+										<%= render partial: "users/signup_form" %>
+									</div>
+								</div>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	<% end %>
+</nav>
+<div id="main-menu">
+	<div class="add-pad">
+		<a class="hf-logo big" href="/" title="Homeward Fitness">
+			<%= image_tag "logo_image.svg" %>
+			<div class="dib">
+				<div class="logo-1">homeward</div>
+				<div class="logo-2">fitness</div>
+			</div>
+		</a>
+	</div>
+	<ul id="main-menu-list">
+		<li><a class="menu-link" href="/leaderboard"><div class="nav-icon dib"><i class="fas fa-trophy"></i></div> Leaderboard</a></li>
+		<li><a class="menu-link" href="/newsfeed"><div class="nav-icon dib"><i class="fas fa-newspaper"></i></div> Newsfeed</a></li>
+		<li><a class="menu-link" href="/live-classes"><div class="nav-icon dib"><i class="fas fa-desktop"></i></div> Live Classes</a></li>
+		<li><a class="menu-link" href="/weekly-workouts"><div class="nav-icon dib"><i class="far fa-calendar-alt"></i></div> All Weekly Workouts</a></li>
+	</ul>
+	<a id="main-menu-workouts" href="/main-menu-workouts" data-remote="true">
+		<div class="wait-container text-center"><span></span><span></span><span></span><span></span></div>
+	</a>
+</div>

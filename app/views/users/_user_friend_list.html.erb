@@ -1,0 +1,16 @@
+<div>
+	<% if @friend_list.length > 0 %>
+		<div class="text-left"><%= render partial: "friends/friend_index", locals: {friends: @friend_list, type: 1} %></div>
+	<% else %>
+		<p class="text-big">No fitness friends...yet</p>
+		<% if params[:user_id].to_i == current_user.id %>
+			<div class="pad-bottom-20 m-width-700 m-auto collapse" id="invite-friends">
+				<div class="text-left add-pad-5 text-info text-bold">Invite a friend by email:</div>
+				<%= form_for(Staging.new, method: :post, url: url_for(controller: "stagings", action: "create")) do |f| %>
+					<%= f.text_field :email, class: "form-control dib top-align text-big", placeholder: "Enter an email address..." %>
+					<%= f.submit "Send Invite", class: "btn btn-success dib top-align disabled text-big", id: "new-staging-btn" %>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+</div>

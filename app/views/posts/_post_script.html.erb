@@ -1,0 +1,50 @@
+var t = <%= t %>;
+$('#post-submit-btn').click(function(e){
+	e.preventDefault();
+	var yt = $('#post_video_url');
+	var c = $('#post_comment');
+	if (yt.val() && (!/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|vimeo\.com\/)([a-zA-Z0-9_-]{8,11})/.test(yt.val()))){
+		$('#error-msg-post p').replaceWith('<p><span>!</span>Please enter a valid YouTube or Vimeo URL</p>');
+		yt.addClass('bad-input');
+		yt.focus();
+		yt.change(function(){
+			yt.removeClass('bad-input');
+			$('#error-msg-post p').replaceWith('<p></p>');
+		});
+	}
+	else if (t===2){
+		checkValues("Please enter the number of reps you completed");
+	}
+	else if (t===3){
+		checkValues("Please enter your completion time");
+	}
+	else if (c && c.val().length > 250){
+		$('#error-msg-post p').replaceWith('<p><span>!</span>Comments cannot exceed 250 characters</p>');
+		c.addClass('bad-input');
+		c.focus();
+		c.change(function(){
+			c.removeClass('bad-input');
+			$('#error-msg-post p').replaceWith('<p></p>');
+		})
+	}
+	else {
+	$('#post-form').submit();
+	$('#post-submit-btn').replaceWith('<div class="text-big text-info">Submitting your results...</div>');
+	};
+});
+function checkValues(errMsg){
+	var invalid = true
+	$('.custom-spinner').each(function(){
+		var v = $(this).val();
+		if (v && parseInt(v) > 0){invalid = false};
+	});
+	if (invalid){
+		$('#error-msg-post p').replaceWith('<p><span>!</span>'+errMsg+'</p>');
+		$('.custom-spinner').addClass('bad-input');
+		$('.custom-spinner')[0].focus();
+	}
+	else {
+	$('#post-form').submit();
+	$('#post-submit-btn').replaceWith('<div class="text-big text-info">Submitting your results...</div>');
+	};
+};

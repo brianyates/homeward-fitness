@@ -1,0 +1,112 @@
+<% if current_user && @user %>
+	<% content_for :title do %>
+		<title><%= @user.name %> | Homeward Fitness</title>
+	<% end %>
+	<div class="full-height">
+		<div class="nav-filler"></div>
+		<div class="container-fluid body-container">
+			<div class="row">
+				<div class="col-sm-8 media-pad">
+					<div class="profile-container m-auto dib width-100p main-profile">
+						<div class="profile-header">
+							<div class="profile-header-container">
+								<div class="profile-header-pic">
+									<%= image_tag @user.image_path, class:"header-pic middle-align user-pic" %>
+								</div>
+								<div class="profile-header-info middle-align">
+									<h1><%= @user.name %></h1>
+									<p class="text-info text-big">Homeward Member Since <span class="text-bold dib"><%= @user.created_at.strftime('%B %d, %Y') %></span></p>
+									<%= render partial: "friends/friend_options", locals: {friend_obj: @friend, type: 0} %>
+								</div>
+							</div>
+						</div>
+						<% if @recent_posts.length > 0 %>
+							<h3 class="text-center">Performance History</h3>
+							<a class="async-load-btn" id="user-chart-target" data-remote="true" href="/get-user-chart/<%= @user.id %>?cutoff_date=<%= @cutoff_date %>">
+								<div class="text-center full-pad wait-container"><span></span><span></span><span></span><span></span></div>
+							</a>
+						<% else %>
+							<h4 class="text-center">No workout data to show...yet</h4>
+						<% end %>
+					</div>
+				</div>
+				<div class="col-sm-4 media-pad">
+					<div class="profile-container m-auto lifetime-section">
+						<h3 class="profile-section-header">Lifetime Totals</h3>
+						<table class="lifetime-table marg-bottom-10">
+							<tbody>
+								<tr>
+									<td class="text-green"><i class="fas fa-universal-access"></i></td>
+									<td>Workouts Completed: <span class="text-bold"><%= number_with_delimiter(@user.workout_count) %></span></td>
+								</tr>
+								<tr>
+									<td class="text-purple"><i class="fas fa-hourglass-start"></i></td>
+									<td>Time Logged: <span class="text-bold"><%= total_time(@user.total_time) %></td>
+								</tr>
+								<tr>
+									<td class="text-orange"><i class="fas fa-star"></i></td>
+									<td>Fitness Points Accumulated: <span class="text-bold"><%= @user.total_points.present? ? (number_with_delimiter(@user.total_points)) : 0 %></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="profile-container m-auto recent-workouts">
+						<h3 class="profile-section-header marg-bottom-20">Recent Workouts</h3>
+						<% if @recent_posts.length > 0 %>
+							<table class="recent-post-table marg-bottom-20 width-100p">
+								<tbody>
+									<% @recent_posts.each do |p| %>
+										<tr>
+											<td><a href="/posts/<%= p.post_id %>"><%= image_tag p.image.thumb.url, class: "recent-post-img img-rounded" %></a></td>
+											<td><a href="/posts/<%= p.post_id %>"><%= p.workout_title %></td>
+											<td><%= pluralize(p.total_points, "point") %></td>
+											<td class="text-muted"><%= p.created_at.strftime('%b %d, %Y') %></td>
+										</tr>
+									<% end %>
+								</tbody>
+							</table>
+							<div class="text-center"><a class="btn btn-main" href="/users/<%= @user.id %>/workouts">View All Completed Workouts</a></div>
+						<% else %>
+							<p class="text-center">No workouts have been completed...yet</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 media-pad">
+					<div class="profile-container m-auto text-center marg-bottom-20">
+						<div class="profile-section-header text-left">Fitness Friends</div>
+						<a id="friend-list-target-btn" class="async-load-btn" href="/get-user-friend-list/<%= params[:id] %>" data-remote="true" >
+							<div class="wait-container full-pad"><span></span><span></span><span></span><span></span></div>
+						</a>
+						<div class="profile-section-footer text-right">							
+							<a href="/friends/<%= @user.id %>" class="cursor-pointer friend-footer-btn dib"><i class="fas fa-users"></i> View All Friends (<%= number_with_delimiter(@friend_count) %>)</a>
+							<a role="button" data-toggle="modal" data-target="#invite-friends" class="cursor-pointer friend-footer-btn dib"><i class="fas fa-user-plus"></i> Invite Friends</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 media-pad">
+					<div class="profile-container m-auto text-center marg-bottom-40">
+						<div class="profile-section-header text-left" id="fitness-badges">Homeward Fitness Badges</div>
+						<a id="badge-target-btn" class="async-load-btn" href="/get-badges/<%= params[:id] %>" data-remote="true" >
+							<div class="wait-container full-pad"><span></span><span></span><span></span><span></span></div>
+						</a>
+						<div class="profile-section-footer text-right">							
+							<div id="badge-count"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<% else %>
+	<div class="main-container">
+		<% if current_user %>
+			<h3>This account is private, or it does not exist.</h2>
+		<% else %>
+			<h3>You need to <a role='button' class='cursor-pointer login-toggle'>log in</a> to view profile pages</h3>
+		<% end %>
+	</div>
+<% end %>

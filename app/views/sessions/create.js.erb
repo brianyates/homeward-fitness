@@ -1,0 +1,4 @@
+<% if @error %>
+	$('#error-msg-login p').replaceWith('<p><span>!</span>Invalid email or password.</p>');
+	$('#login-submit-btn').removeClass('disabled');
+<% end %>

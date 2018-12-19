@@ -1,0 +1,52 @@
+<% content_for :title do %>
+	<title>Edit Your Email Preferences | Homeward Fitness</title>
+<% end %>
+<div class="main-container">
+	<% if @email_preferences %>
+		<h2 class="marg-bottom-20">Edit Your Email Preferences</h2>
+		<div class="form-container grey-form m-width-550 text-left marg-bottom-20 rounded">
+			<%= form_for(@email_preferences, method: :patch, url: url_for(controller: "email_preferences", action: "update")) do |f| %>
+				<div class="field-container">
+					<p class="text-big">Would you like to receive emails when...</p>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "You receive a new friend request?" %>
+					<%= f.select :friend_requests, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Someone comments on or likes your post?" %>
+					<%= f.select :post_info, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Someone replies to your comment?" %>
+					<%= f.select :comment_replies, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "You've earned a new Homeward Fitness Badge?" %>
+					<%= f.select :new_badge, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "You've had a noteworthy finish on our Leaderboard?" %>
+					<%= f.select :leaderboard, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "You receive a new Fitness Contest invitation?" %>
+					<%= f.select :contest_invitation, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "Someone posts a comment in a Fitness Contest you're participating in?" %>
+					<%= f.select :contest_comments, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container">
+					<%= f.label nil, "A Fitness Contest you're participating in has completed?" %>
+					<%= f.select :contest_info, [["Yes", 1], ["No", 0]] %>
+				</div>
+				<div class="field-container top-pad">
+					<%= f.submit "Update Email Preferences", class: "btn btn-main", id: "account-edit-btn" %>
+				</div>
+			<% end %>
+		</div>
+	<% else %>
+		<%= not_logged_in %>
+	<% end %>
+</div>

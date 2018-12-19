@@ -1,0 +1,7 @@
+$('#contest-list-item-<%= @contestant.id %> .confirm-contest-btns').replaceWith('<div class="text-danger top-pad-5">Declined</div>');
+<% if @contest_count > 0 %>
+	var cc = '<%= @contest_count %>';
+	$('#contest-circle').replaceWith('<div id="contest-circle">'+cc+'</div>');
+<% else %>
+	$('#contest-circle').remove();
+<% end %>

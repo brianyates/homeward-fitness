@@ -1,0 +1,25 @@
+<div class="modal-content" id="like-content">
+	<% if @count > 0 %>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3 class="modal-title text-info"><%= pluralize(@count, "Like") %></h3>
+		</div>
+		<div class="modal-body">
+			<table class="like-table">
+				<tbody>
+					<% @likes.each do |i| %>
+						<tr>
+							<td><%= image_tag i.image_path, class: "user-pic comment" %></td>
+							<td><a href="/users/<%= i.user_id %>"><%= i.name %></a></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	<% else %>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3 class="modal-title text-info">No likes...yet</h3>
+		</div>
+	<% end %>
+</div>

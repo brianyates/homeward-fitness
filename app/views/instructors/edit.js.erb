@@ -1,0 +1,21 @@
+$('#instructor_<%= params[:field] %>').replaceWith('<%= j render partial: "#{params[:field]}_form" %>');
+$('#cancel_<%= params[:field] %>').click(function(){
+	$('#instructor_<%= params[:field] %>').replaceWith('<%= j render partial: params[:field], locals: {t: 1} %>');
+	$('.instr-edit').click(function(){$(this).replaceWith('<div class="wait-container dib middle-align"><span></span><span></span><span></span><span></span></div>')});
+});
+<% if params[:field]=="website_url" %>
+$('#instr_submit_website_url').click(function(e){
+	e.preventDefault();
+	var i = $('#instr_input_website_url').val();
+	if (i){
+		if (/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/.test(i)){
+			$('#instr_form_website_url').submit();
+		}
+		else{alert('Please enter a valid URL (must begin with either HTTP:// or HTTPS://)')};
+	}
+	else{$('#instr_form_website_url').submit()};
+});
+<% elsif params[:field]=="address" %>
+	var input = document.getElementById('instr_input_address');
+	var autocomplete = new google.maps.places.Autocomplete(input);
+<% end %>

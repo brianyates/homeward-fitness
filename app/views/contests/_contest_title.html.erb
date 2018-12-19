@@ -1,0 +1,6 @@
+<div class="cool-text-big" id="contest-title">
+	<%= @contest.contest_title %>
+	<% if current_user.id == @contest.owner_id %>
+		<a href="/edit-contest/<%= @contest.id %>" class="edit-title-btn" title="Edit Contest Title" data-remote="true"><i class="fas fa-edit"></i></a>
+	<% end %>
+</div>

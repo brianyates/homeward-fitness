@@ -1,0 +1,37 @@
+<div class="main-container">
+	<% if is_admin? %>
+		<h2>Contact Us Index</h2>
+		<div class="table-container m-auto m-width-800">
+			<table class="table table-striped text-left">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Category</th>
+						<th>Content</th>
+						<th>Date</th>
+						<th>Action</th>
+					</tr>
+				<thead>
+				<tbody>
+					<% @contacts.each do |c| %>
+						<tr>
+							<td><%= c.name %></td>
+							<td><%= c.email %></td>
+							<td><%= @categories[c.category] %></td>
+							<td><%= c.content %></td>
+							<td><%= c.created_at.strftime('%m-%d-%Y') %></td>
+							<td>
+								<% if c.resolved==true %>
+									<span class="text-success"><i class="fas fa-check-circle"></i> Resolved</span>
+								<% else %>
+									<a href="/contact-us/resolve/<%= c.id %>" data-method="post" rel="nofollow" data-confirm="Mark as resolved?">Mark as Resolved</a>
+								<% end %>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	<% end %>
+</div>

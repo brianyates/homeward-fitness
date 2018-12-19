@@ -1,0 +1,12 @@
+<% if params[:type].present? %>
+	$('#respond-btn-<%= @friend.id %>').parent().replaceWith('<%= j render partial: "/friends/is_friend", locals: {type: params[:type].to_i, friend_obj: @friend} %>');
+<% end %>
+$('#confirm-btns-<%= @friend.id %>').replaceWith('<div class="top-pad text-info text-bold">Friend request accepted!</div>');
+<% if @request_count > 0 %>
+	var r = '<%= @request_count %>';
+	$('#friend-circle').replaceWith('<div id="friend-circle">'+r+'</div>');
+<% else %>
+	$('#friend-circle').remove();
+<% end %>
+	
+	

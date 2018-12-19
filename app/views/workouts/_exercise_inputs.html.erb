@@ -1,0 +1,5 @@
+<div id="exercise-row-<%= i %>" class="top-pad">
+	<div class="dib top-align"><input class="form-control" placeholder="Exercise description" type="text" name="workout[exercises_attributes][<%= i %>][description]" id="exercise_description_<%= i %>"></input></div>
+	<div class="dib top-align"><input class="form-control" placeholder="Points per rep" type="number" name="workout[exercises_attributes][<%= i %>][points_per_rep]" id="exercise_ppr_<%= i %>"></input></div>
+	<div class="dib top-align"><a class="btn btn-danger" id="remove-<%= i %>-btn">Remove</a></div>
+</div>

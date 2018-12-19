@@ -1,0 +1,111 @@
+<div class="post-container">
+	<div class="post-header ph-<%= post_object.workout_id % 4 %>">
+		<table>
+			<tbody>
+				<tr>
+					<td class="add-pad-5 width-50 text-left"><a href="/users/<%= post_object.user_id %>"><%= image_tag post_object.image_path, class: "user-pic big-pic" %></a></td>
+					<td class="text-left"><a href="/users/<%= post_object.user_id %>" class="post-name"><%= post_object.name %></a></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="text-left add-pad-5 text-big"><%= post_object.comment.present? ? post_object.comment : "Check out my workout results!" %></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="post-body">
+		<table class="post-table">
+			<tbody>
+				<% if post_object.image.url.present? %>
+					<tr>
+						<td class="image-cell" colspan="2"><%= image_tag post_object.image.url, class: "post-image" %></td>
+					</tr>
+				<% elsif post_object.video_url.present? %>
+					<tr>
+						<td class="image-cell" colspan="2">
+							<div class="embed-responsive embed-responsive-16by9 post-video">
+								<iframe class="embed-responsive-item" src="<%= post_object.video_url %>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+							</div>
+						</td>
+					</tr>
+				<% end %>
+			<% if current_user && (post_object.user_id == current_user.id) %>
+				<tr>
+					<td colspan="2" class="text-right">
+						<a href="/posts/<%= post_object.id %>/edit" class="text-muted small add-pad-5">Edit</a> 
+						<%= link_to "Delete", "/posts/#{post_object.id}", method: :delete, class:"text-muted small add-pad-5", data: {confirm: "Are you sure you want to delete this post? This cannot be undone!"} %>
+					</td>
+				</tr>
+			<% end %>
+				<tr>
+					<td class="icon-cell"><span class="text-primary font-20"><i class="fas fa-universal-access"></i></span></td>
+					<td class="main-info"><a class="text-bold" href="/workouts/<%= post_object.workout_id %>"><%= post_object.workout_title %></a><span class="small"> - Completed <%= post_object.created_at.strftime('%B %d, %Y') %></span></td>
+				</tr>
+				<tr>
+					<td class="icon-cell text-orange"><i class="fas fa-star"></i></td>
+					<td class="main-info"><span class="text-bold"><%= post_object.total_points %> Total Fitness Points Earned</span></td>
+				</tr>
+				<% post_object.results_with_exercises.each do |r| %>
+					<tr>
+						<td></td>
+						<td>
+							<span class="text-green"><i class="fas fa-check-circle"></i></span>
+							<% if post_object.workout_type == 1 %>
+								<span class="text-bold"><%= post_object.points_per_workout %> points</span> per workout completed
+							<% elsif post_object.workout_type == 3 %>
+								<span class="text-bold"><%= r.total_points %> points</span> for a completion time of <span class="text-bold"><%= minute_convert(post_object.seconds) %></span>
+							<% else %>
+								<% if r.exercise_description == "Round" %>
+									<span class="text-bold"><%= pluralize(r.reps, "Round") %> Completed</span> (<%= r.points_per_rep %> Fitness Points per round completed)
+								<% else %>
+									<span class="text-bold">
+									<% if post_object.rounds_and_reps == true %>
+										<%= pluralize(r.reps,"Extra " + r.exercise_description + " Rep") %>
+									<% else %>
+										<%= pluralize(r.reps, r.exercise_description + " Rep") %>
+									<% end %>
+									</span> 
+									(<%= pluralize(r.points_per_rep, "Fitness Point") %> per rep)
+								<% end %>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<div class="post-action-info text-left top-marg-20">
+			<a data-remote="true" href="/get-likes/<%= post_object.thing_id %>" class="retrieve-likes" id="like-count-<%= post_object.thing_id %>"><%= pluralize(post_object.like_count, "Like") %></a>
+			|
+			<a id="comment-count-<%= post_object.thing_id %>" data-id="<%= post_object.thing_id %>" class="collapsed comment-collapse-<%= post_object.thing_id %>" data-toggle="collapse" href="#show-comments-<%= post_object.thing_id %>" role="button"><%= pluralize(post_object.comment_count, "Comment") %></a>
+		</div>
+		<div class="post-actions text-left">
+			<% if current_user %>
+				<% if thing_liked(post_object.thing_id) %>
+					<a id="like-btn-<%= post_object.thing_id %>" href="/unlike/<%= post_object.thing_id %>" data-remote="true" data-method="post" class="like-btn liked loaded">
+						<span class="icon dib"><i class="fas fa-thumbs-up"></i></span>
+						<span class="desc">Like</span>
+					</a>
+				<% else %>
+					<a id="like-btn-<%= post_object.thing_id %>" href="/like/<%= post_object.thing_id %>" data-remote="true" data-method="post" class="like-btn">
+						<span class="icon dib text-big"><i class="fas fa-thumbs-up"></i></span>
+						<span class="desc">Like</span>
+					</a>
+				<% end %>
+			<% else %>
+				<a class="cursor-pointer" data-toggle="modal" data-target="#login-modal">
+					<span class="icon dib text-big"><i class="fas fa-thumbs-up"></i></span>
+					<span class="desc">Like</span>
+				</a>
+			<% end %>
+			<a class="collapsed comment-collapse-<%= post_object.thing_id %>" data-id="<%= post_object.thing_id %>" data-toggle="collapse" href="#show-comments-<%= post_object.thing_id %>" role="button">
+				<span class="text-big"><i class="fas fa-comment"></i></span> Comment
+			</a>
+		</div>
+		<div id="show-comments-<%= post_object.thing_id %>" class="collapse comment-container text-left">
+			<a id="comment-target-<%= post_object.thing_id %>" data-remote="true" href="<%= load_comments_path(thing_id: post_object.thing_id, comment_count: post_object.comment_count, timestamp: @timestamp) %>">
+				<div class="wait-container text-center"><span></span><span></span><span></span><span></span></div>
+			</a>
+		</div>
+	</div>
+</div>
+<script>$(".comment-collapse-<%= post_object.thing_id %>").click(function(){var c=$(this).data("id");$("#comment-target-"+c).click()});</script>

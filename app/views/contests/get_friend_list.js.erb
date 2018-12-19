@@ -1,0 +1,5 @@
+$('#contestant-friend-list').replaceWith('<%= j render partial: "contest_friend_list" %>');
+$('.c-invite-btn').click(function(){
+	$(this).addClass('disabled');
+	$(this).text('Invited');
+});

@@ -1,0 +1,11 @@
+<div class="m-auto m-width-550 full-pad rounded" id="edit-contest-title">
+	<%= form_for(@contest, method: :post, html: {id: "edit-contest-form"}, url: url_for(controller: "contests", action: "update")) do |f| %>
+		<div class="field-container add-pad">
+			<%= f.text_field :contest_title, class: "form-control" %>
+		</div>
+		<div class="field-container add-pad text-right">
+			<%= f.submit "Save Changes", class: "btn btn-purple btn-instr", id: "submit-title-edits" %>
+			<a class="btn btn-default btn-instr" id="cancel-contest-edits">Cancel</a>
+		</div>
+	<% end %>
+</div>

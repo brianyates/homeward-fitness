@@ -1,0 +1,3 @@
+$("#comment-like-<%= @like.comment_id %>").attr("href", "/comment-unlike/<%= @like.comment_id %>");
+$("#comment-like-count-<%= @like.comment_id %>").replaceWith('<div class="dib" id="comment-like-count-<%= @like.comment_id %>">| <a data-remote="true" class="text-xsmall text-muted retrieve-likes" href="/get-comment-likes/<%= @like.comment_id %>"><%= j pluralize(@like_count, "Like") %></a></div>');
+$('.retrieve-likes').click(function(){$('#like-modal').modal('show')});

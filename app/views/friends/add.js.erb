@@ -1,0 +1,9 @@
+$('#add-friend-btn-<%= params[:id] %>').replaceWith('<a class="btn btn-main disabled<%= ' smaller-btn' if params[:type]=="1" %>">Friend Request Pending...</a>');
+<% if @request_count > 0 %>
+	var r = '<%= @request_count %>';
+	$('#friend-circle').replaceWith('<div id="friend-circle">'+r+'</div>');
+<% else %>
+	$('#friend-circle').remove();
+<% end %>
+	
+	

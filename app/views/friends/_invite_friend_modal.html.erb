@@ -1,0 +1,23 @@
+<div id="invite-friends" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title text-center text-info">Invite a friend to join Homeward Fitness!</h3>
+			</div>
+			<div class="modal-body text-left">
+				<div class="form-container">
+					<%= form_for(Staging.new, method: :post, url: url_for(controller: "stagings", action: "create")) do |f| %>
+						<div class="marg-bottom-20">
+						<%= f.label nil, "Enter your friend's email:" %>
+						<%= f.email_field :email, class: "form-control staging_email_input", placeholder: "friend@example.com", id: "staging_email" %>
+						</div>
+						<div>
+						<%= f.submit "Send Invite", class: "btn btn-success disabled", id: "staging-btn" %>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

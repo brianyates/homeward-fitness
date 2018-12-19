@@ -1,0 +1,22 @@
+<%= content_for :title do %>
+	<title>Log In to Your Account | Homeward Fitness</title>
+<% end %>
+<div class="main-container">
+	<h2 class="marg-bottom-20">Log In to Your Account</h2>
+	<div class="form-container grey-form m-width-550 text-left">
+		<%= form_for(:session, html: {id: "login_sync_form"}, url: url_for(controller: "sessions", action: "create_sync")) do |f| %>
+			<div class="field-container">
+				<%= f.label "Email:" %>
+				<%= f.email_field :email, class: "form-control", placeholder: "Enter your email address..." %>
+			</div>
+			<div class="field-container">
+				<%= f.label "Password:" %>
+				<%= f.password_field :password, class: "form-control", placeholder: "Enter your password..." %>
+				<div class="text-right"><a class="text-muted text-xsmall" href="/account-recovery">Forgot your password?</a></div>
+			</div>
+			<div class="field-container">
+				<%= f.submit "LOG IN", id:"login_sync_btn", class:"btn btn-info" %>
+			</div>
+		<% end %>
+	</div>
+</div>

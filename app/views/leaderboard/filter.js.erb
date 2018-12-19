@@ -1,0 +1,2 @@
+$('#leaderboard-target').replaceWith('<%= j render partial: "leaderboard_table", locals: {filter_val: @filter, results: @top_performers} %>');
+$('a#load-performers').click(function(){$(this).replaceWith('<div id="load-performers" class="wait-container full-pad text-center"><span></span><span></span><span></span><span></span></div>')});

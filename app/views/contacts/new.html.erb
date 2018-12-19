@@ -1,0 +1,53 @@
+<% content_for :title do %>
+	<title>Contact Us | Homeward Fitness</title>
+<% end %>
+<% if flash[:modal].present? %>
+	<div id="contact-modal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title text-center text-info">Message Received!</h1>
+				</div>
+				<div class="modal-body text-center">
+					<h4 class="add-pad m-width-450 m-auto">Thank you for your message. We will take a look and get back to you as soon as we can. In the meantime, you can
+					<a href="/weekly-workouts">check out this week's workouts!</a></h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>$('#contact-modal').modal('show');</script>
+<% end %>
+<div class="main-container">
+	<h1>Contact Us</h1>
+	<div class="form-container text-left grey-form m-width-550 m-auto">
+		<%= form_for(@contact, method: :post, url: url_for(controller: "contacts", action: "create")) do |f| %>
+			<div class="field-container">
+				<%= f.label nil, "Category:" %>
+				<%= f.select :category, [["General inquiry", 0], ["Data issue or software bug", 1], ["I want to be a workout instructor", 2], ["Other", 3]], prompt: "Please select a category..." %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Full Name:" %>
+				<%= f.text_field :name, class: "form-control", placeholder: "Enter your full name...", value: (current_user.name if current_user) %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Email Address:" %>
+				<%= f.email_field :email, class: "form-control", placeholder: "Enter your email address...", value: (current_user.email if current_user) %>
+			</div>
+			<div class="field-container">
+				<%= f.label nil, "Message:" %>
+				<%= f.text_area :content, class: "form-control big", placeholder: "How can we help you?" %>
+			</div>
+			<div class="field-container">
+				<div class="g-recaptcha" data-sitekey="6LcyY1QUAAAAAEUpp26G9DoTpZf8rSLhA8iiu1G6" data-callback="recaptcha_callback"></div>
+			</div>
+			<div class="field-container">
+				<%= f.submit "Submit", class: "btn btn-main disabled", id: "submit-contact" %>
+			</div>
+		<% end %>
+	</div>
+</div>
+<script src='https://www.google.com/recaptcha/api.js'></script>

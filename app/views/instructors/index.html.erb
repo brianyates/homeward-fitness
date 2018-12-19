@@ -1,0 +1,25 @@
+<% content_for :title do %>
+	<title>Workout Instructors | Homeward Fitness</title>
+<% end %>
+<div class="nav-filler"></div>
+<div class="full-height white-bg">
+	<div class="cool-bg text-center marg-bottom-20">
+		<div class="cool-overlay auto-height o-3">
+			<div class="cool-head about">Workout Instructors</div>
+		</div>
+	</div>
+	<div class="m-width-1000 m-auto add-pad-5">
+		<% @instructors.each do |i| %>
+			<div class="friend-container m-width-500">
+				<div class="dib middle-align full-pad">
+					<%= image_tag i.image_path, class: "user-pic instructor-pic" %>
+				</div>
+				<div class="dib text-left middle-align friend-subcontainer">
+					<a class="text-xbig" href="/instructors/<%= i.id %>"><%= i.instructor_name %></a>
+					<p class="marg-bottom-0"><%= pluralize(i.workout_count, "workout") %> posted</p>
+					<p class="marg-bottom-0">Joined <%= i.created_at.strftime('%b %d, %Y') %></p>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>

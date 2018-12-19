@@ -1,0 +1,6 @@
+$(".comment-<%= @c.id %>-row").remove();
+$('#comment-count-<%= @c.thing_id %>').text('<%= j pluralize(@comment_count, "Comment") %>');
+if (o){o--}
+else{ var o = parseInt($('#more-comments-<%=  @c.thing_id %>').data('offset')) - 1};
+$('#more-comments-<%=  @c.thing_id %>').attr('data-offset', o);
+$('#more-comments-<%=  @c.thing_id %>').attr('href', '/more-comments?thing_id=<%= @c.thing_id %>&offset='+o+'&timestamp=<%= params[:timestamp] %>');

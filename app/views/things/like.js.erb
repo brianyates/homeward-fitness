@@ -1,0 +1,2 @@
+$("#like-btn-<%= @like.thing_id %>").attr("href", "/unlike/<%= @like.thing_id %>");
+$("#like-count-<%= @like.thing_id %>").text('<%= j pluralize(@like_count, "Like") %>');

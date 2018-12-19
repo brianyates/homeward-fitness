@@ -1,0 +1,5 @@
+<div class="text-center add-pad"><a id="prof-pic-btn" class="text-small btn btn-default cursor-pointer"><i class="fas fa-camera"></i> Upload New Profile Picture</a></div>
+<%= form_for(Avatar.new, method: :post, html: {id: "change-pic-form" }, url: url_for(controller: "avatars", action: action)) do |f| %>
+	<%= f.file_field :image, class: "no-show", accept: "image/jpg,image/png,image/jpeg,image/gif" %>
+	<%= f.submit "Submit", class: "no-show" %>
+<% end %>

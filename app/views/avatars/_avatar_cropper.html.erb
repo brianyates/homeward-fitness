@@ -1,0 +1,31 @@
+<% if flash[:modal] %>
+	<div id="change-image-modal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Crop Profile Picture</h3>
+				</div>
+				<div id="change-image-content">
+					<%= image_tag @avatar.image.url, class: "width-100p", id: "cropbox" %>
+				</div>
+				<div>
+					<%= form_for(@avatar, method: :post, url: url_for(controller: "avatars", action: "crop_#{type}", id: @avatar.id)) do |f| %>
+						<%= f.hidden_field :crop_x, id: "crop_x" %>
+						<%= f.hidden_field :crop_y, id: "crop_y" %>
+						<%= f.hidden_field :crop_w, id: "crop_w" %>
+						<%= f.hidden_field :crop_h, id: "crop_h" %>
+						<%= f.hidden_field :avatar_id, id: "avatar_id", value: @avatar.id %>
+						<div class="modal-footer">
+							<div id="crop-buttons">
+								<%= f.submit "Save", class: "btn btn-main dib", id: "save_crop" %>
+								<a role="button" class="btn btn-default dib" data-dismiss="modal">Cancel</a>
+							</div>
+							<div class="wait-container no-show" id="crop-wc"><span></span><span></span><span></span><span></span></div>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a id="cancel-crop" data-remote="true" href="/cancel-crop-<%= type %>/<%= @avatar.id %>" data-method="post">f</a>
+<% end %>

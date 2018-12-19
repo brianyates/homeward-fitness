@@ -1,0 +1,28 @@
+<div class="text-left marg-bottom-20" id="instructor_address">
+	<% if @instructor.address.present? %>
+		<p class="text-bold text-big">Instructor's Location: 
+			<% if t==1 %>
+				<a id="edit-instr-address" class="text-info marg-left-5 instr-edit" title="Edit your address" data-remote="true" href="/instructors/<%= params[:id] %>/owner/edit?field=address"><i class="fas fa-edit"></i></a>
+			<% end %>
+		</p>
+		<p class="text-big"><span class="text-danger"><i class="fas fa-map-marker-alt"></i></span> <%= @instructor.address %></p>
+		<% if @instructor.latitude.present? && @instructor.longitude.present? %>
+			<div id="gmap"></div>
+			<script>
+				var lat = <%= @instructor.latitude %>;
+				var lng = <%= @instructor.longitude %>;
+				var map = new google.maps.Map(document.getElementById('gmap'));
+				var marker = new google.maps.Marker({
+					position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+					map: map, 
+					animation: google.maps.Animation.DROP,
+				});
+				map.setZoom(7);
+				map.setCenter({lat: lat, lng: lng});
+			</script>
+		<% end %>
+	<% elsif t==1 %>
+		<a class="btn btn-info instr-edit btn-instr" data-remote="true" href="/instructors/<%= params[:id] %>/owner/edit?field=address"><i class="fas fa-plus-circle"></i> Add an Address</a>
+		<div class="text-info dib marg-left-5 text-small"><i class="fas fa-info-circle"></i> This is completely optional. If you add an address, it will be public and displayed on a map.</div>
+	<% end %>
+</div>

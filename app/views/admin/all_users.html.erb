@@ -1,0 +1,38 @@
+<div class="main-container">
+	<% if is_admin? %>
+		<h1 class="marg-bottom-20">All Users</h1>
+		<div class="table-container">
+			<table class="table table-striped text-left">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Join Date</th>
+						<th>Provider</th>
+						<th>Instructor?</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @users.each do |u| %>
+						<tr>
+							<td><a href="/users/<%= u.id %>"><%= u.name %></a></td>
+							<td><%= u.email %></td>
+							<td><%= u.created_at.strftime('%b %d, %Y') %></td>
+							<td><%= u.provider.present? ? u.provider.capitalize : "None" %></td>
+							<td>
+								<% if u.instructor_id.present? %>
+									<a href="/instructors/<%= u.instructor_id %>">Yes</a>
+								<% else %>
+									No
+								<% end %>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	<% else %>
+		<h3>Sorry, you don't have access to view this page</h3>
+	<% end %>
+</div>
+			

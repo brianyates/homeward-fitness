@@ -1,0 +1,22 @@
+<% if results.length > 0 %>
+	<% results.each_with_index do |r, i| %>
+		<tr class="gb">
+			<td class="rank-cell">
+				<%= r.rank %>
+			</td>
+			<td>
+				<div class="main-info">
+					<a href="/users/<%= r.user_id %>" class="middle-align marg-lr-5 dib"><%= image_tag r.image_path, class: "user-pic big-pic" %></a>
+					<div class="dib middle-align"><a class="text-xbig" href="/users/<%= r.user_id %>"><%= r.name %></a></div>
+					<% if r.rank < 4 %>
+						<div class="dib trophy-container" title="<%= r.rank.ordinalize %> Place"><%= render partial: "leaderboard/trophy_#{r.rank}" %></div>
+					<% end %>
+				</div>
+				<div class="bg-lb">
+					<div class="dib add-pad-5"><span class="text-bold">Points: </span><%= number_with_delimiter(r.points) %></div>
+					<div class="dib add-pad-5"><span class="text-bold">Time: </span><%= total_time(r.seconds) %></div>
+				</div>
+			</td>
+		</tr>
+	<% end %>
+<% end %>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<p style="font-size:16px;color:#333">
+						Hi <%= @performance.name.split(" ")[0] %>,
+					</p>
+					<p style="font-size:16px;color:#333">
+						Awesome job! You finished this week with the best overall performance for one of our weekly workouts. Here are the details:
+					</p>
+					<div style="border-top: 1px solid #ddd;margin: 30px auto 50px auto;padding: 25px 0;">
+						<div style="background-color:#60b0d6;text-align: center;padding: 5px;">
+							<a href="<%= @email_domain %>/workouts/<%= @performance.workout_id %>" style="font-size:14px; text-decoration:none;color:#fff">Weekly Workout <%= @performance.id %> - <%= @performance.workout_title.upcase %></a>
+						</div>
+						<table style="width:100%;border-collapse: collapse;border-spacing: 0;">
+							<tbody>
+								<tr>
+									<td>
+										<div style="padding:5px;">
+											<a href="<%= @email_domain %>/users/<%= @performance.user_id %>" style="text-decoration:none">
+												<% unless @performance.image_path.last(4) == ".svg" %>
+													<%= image_tag @performance.image_path, width:"48px", height:"48px", style:"margin-right:5px;border-radius:50%;vertical-align:middle;" %>
+												<% else %>
+													<div style="width: 48px;height: 48px;background-color: #5ca4c1;color: #fff;text-align: center;font-size: 28px;line-height: 48px;vertical-align: middle;display: inline-block;margin-right: 5px;border-radius: 50%;"><%= @performance.name[0,1].upcase %></div>
+												<% end %>
+											</a>
+											<a href="<%= @email_domain %>/users/<%= @performance.user_id %>" style="text-decoration:none;font-size:18px;"><%= @performance.name %></a>
+										</div>
+									</td>
+									<td style="width:95px;text-align:center;">
+										<img alt="Best Performance Trophy" src="https://s3.us-east-2.amazonaws.com/homewardfitness/trophy_1.png" width="34px" height="34px" style="vertical-align:middle"></img>
+									</td>
+								</tr>
+								<tr style="background-color:#eef5f9">
+									<td>
+										<div style="padding:5px;display:inline-block;font-size:16px;color:#333"><span style="font-weight:bold">Points:</span> <%= number_with_delimiter(@performance.points) %></div>
+										<div style="padding:5px;display:inline-block;font-size:16px;color:#333"><span style="font-weight:bold">Time:</span> <%= total_time(@performance.seconds) %></div>
+									</td>
+									<td style="padding:10px 0;">
+										<a href="<%= @email_domain %>/posts/<%= @performance.post_id %>" style="padding: 6px 12px;background-color: #fff;color: #333;font-size:12px;border: 1px solid #ccc;border-radius:4px;text-decoration: none;">View Result</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p style="font-size:16px;color:#333">Your fitness friend,</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: true, uid: @performance.user_id, aid: @token_1, bid: @token_2, email_pref: 6} %>
+		</div>
+	</body>
+</html>

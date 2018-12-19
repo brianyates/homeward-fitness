@@ -1,0 +1,59 @@
+<%= content_for :title do %>
+	<title>Change Your Password | Homeward Fitness</title>
+<% end %>
+<div class="main-container">
+	<% if @user %>
+		<h2 class="marg-bottom-20">Change Your Password</h2>
+		<div class="form-container grey-form m-width-600 text-left">
+			<%= form_for(:user, method: :patch, html: {id:"change-pwd-form"}, url: url_for(:controller => 'users', :action => 'update_account_recovery', :token => params[:token], :tid => params[:tid], :id => params[:id]))  do |f| %>
+				<div class="field-container">
+					<%= f.label :password, "Enter new password:" %><div class="form-alert dib text-danger" id="pwd-alerts"><p></p></div>
+					<%= f.password_field :password_new, value: "", class:"form-control", id:"new-password"  %>
+				</div>
+				<div class="field-container">
+					<%= f.label "Confirm new password:" %><div class="form-alert dib text-danger" id="c-pwd-alerts"><p></p></div>
+					<%= f.password_field :password_confirm, class:"form-control", id:"confirm-password" %>
+				</div>
+				<div class="field-container add-pad">
+					<%= f.submit "Update Password", id: "submit-password", class: "btn btn-main" %>
+				</div>
+			<% end %>
+		</div>
+		<script>
+			$('input#submit-password').click(function(event) {
+				event.preventDefault();
+				var newPass = $('input#new-password').val(), confirmPass = $('input#confirm-password').val();
+				$(".form-alert").removeClass("active");
+				if (newPass.length === 0) {
+					$('#pwd-alerts').addClass('active');
+					$('#pwd-alerts p').replaceWith('<p><i class="fas fa-exclamation-circle" aria-hidden="true"></i> Please enter a new password.</p>');
+					$('input#new-password').focus();
+					$('input#new-password').on('change', function() {
+						$('#pwd-alerts p').replaceWith('<p></p>');
+					});
+				}
+				else if (newPass.length < 8) {
+					$('#pwd-alerts').addClass('active');
+					$('#pwd-alerts p').replaceWith('<p><i class="fas fa-exclamation-circle" aria-hidden="true"></i> Password must be at least 8 characters.</p>');
+					$('input#new-password').focus();
+					$('input#new-password').on('change', function() {
+						$('#pwd-alerts p').replaceWith('<p></p>');
+					});
+				}
+				else if (confirmPass !== newPass) {
+					$('#c-pwd-alerts').addClass('active');
+					$('#c-pwd-alerts p').replaceWith('<p><i class="fas fa-exclamation-circle" aria-hidden="true"></i> Password confirmation does not match.</p>');
+					$('input#confirm-password').focus();
+					$('input#confirm-password').on('change', function() {
+						$('#pwd-alerts p').replaceWith('<p></p>');
+					});
+				}
+				else {
+					$('form#change-pwd-form').submit();
+				}
+			});
+		</script>
+	<% else %>
+		<h3>You have used an expired or invalid password reset link.</h3>
+	<% end %>
+</div>

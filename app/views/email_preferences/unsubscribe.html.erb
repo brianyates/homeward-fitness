@@ -1,0 +1,13 @@
+<div class="nav-filler"></div>
+<div class="body-container full-height add-pad-5">
+	<div class="unsub-container text-center top-marg">
+		<% if @success %>
+			<div class="unsub-header text-info"><i class="fas fa-check-circle"></i> Success</div>
+			<p>You will no longer receive these types of emails.</p>
+			<p>Now that that's over with, why not check out our <a href="/weekly-workouts">Weekly Workouts</a>?</p>
+		<% else %>
+			<div class="unsub-header text-danger"><i class="fas fa-times-circle"></i> Error</div>
+			<p>You could not be unsubscribed because you used an invalid token, or your account could not be found.</p>
+		<% end %>
+	</div>
+</div>

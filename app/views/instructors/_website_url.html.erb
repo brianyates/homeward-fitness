@@ -1,0 +1,12 @@
+<div id="instructor_website_url">
+	<% if @instructor.website_url.present? %>
+		<a class="text-big" target="_blank" href="<%= @instructor.website_url %>"><%= @instructor.website_url %></a>
+		<% if t==1 %>
+			<a class="text-info instr-edit marg-left-5" title="Edit your website address" data-remote="true" href="/instructors/<%= params[:id] %>/owner/edit?field=website_url">
+				<i class="fas fa-edit"></i>
+			</a>
+		<% end %>
+	<% elsif t==1 %>
+		<a class="btn btn-info instr-edit btn-instr" data-remote="true" href="/instructors/<%= params[:id] %>/owner/edit?field=website_url"><i class="fas fa-plus-circle"></i> Add a Website</a>
+	<% end %>
+</div>

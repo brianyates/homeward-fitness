@@ -1,0 +1,13 @@
+<div style="margin:30px auto;text-align:center;max-width:700px">
+	<div>
+		<a style="margin:0 3px" href="https://www.facebook.com/HomewardFitness/"><img alt="Homeward Fitness on Facebook" src="https://s3.us-east-2.amazonaws.com/homewardfitness/facebook_logo.png" style="width:32px"></img></a>
+		<a style="margin:0 3px" href="https://twitter.com/HomewardFitness"><img alt="Homeward Fitness on Twitter" src="https://s3.us-east-2.amazonaws.com/homewardfitness/twitter_logo.png" style="width:32px"></img></a>
+		<a style="margin:0 3px" href="https://www.instagram.com/homewardfitness/"><img alt="Homeward Fitness on Instagram" src="https://s3.us-east-2.amazonaws.com/homewardfitness/instagram_logo.png" style="width:32px"></img></a>
+	</div>
+	<p style="margin: 10px auto;font-size:12px;color:#999">This message was sent to <a style="color:#777777" href="mailto:<%= @email %>"><%= @email %></a>.
+		<% if unsub %>
+			<a style="color:#777777;" href="<%= @email_domain %>/unsubscribe?uid=<%= uid %>&aid=<%= aid %>&bid=<%= bid %>&email_pref=<%= email_pref %>">Click to unsubscribe</a> from emails like these.
+		<% end %>
+	</p>
+	<p style="margin-top:10px;font-size:12px;color:#aaa;padding-bottom:10px">© 2018 Homeward Fitness. All Rights Reserved.</p>
+</div>

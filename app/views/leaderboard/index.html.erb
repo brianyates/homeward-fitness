@@ -1,0 +1,69 @@
+<% content_for :title do %>
+	<title>This Week's Leaderboard | Homeward Fitness</title>
+<% end %>
+<%= render partial: "layouts/like_modal" %>
+<% unless current_user %>
+	<%= render partial: "layouts/login_modal" %>
+<% end %>
+<div class="full-height">
+	<div class="nav-filler"></div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12 current-header leaderboard no-pad">
+				<div class="header-overlay text-center">
+					<h1>This Week's Leaderboard</h1>
+				</div>
+			</div>
+		</div>
+		<% if current_user %>
+			<% if current_user.privacy_setting != 0 %>
+				<div class="bg-warning text-center notif">Your account privacy settings are not public, so you are not eligible for the Leaderboard. To change this, go to your <a href="/settings">account settings</a>.
+					<a class="close-notif">&times;</a>
+				</div>
+			<% else %>
+				<div class="bg-info text-center notif">YOUR TOTALS THIS WEEK - 
+					<% if @user_data && @user_data.total_points %>
+						<div class="dib"><span class="text-bold">Points:</span> <%= number_with_delimiter(@user_data.total_points) %> | <span class="text-bold">Time:</span> <%= total_time(@user_data.total_seconds || 0) %>
+					<% else %>
+						<div class="dib"><span class="text-bold">Points:</span> 0 | <span class="text-bold">Time:</span> 0 seconds
+					<% end %>
+					</div>
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="body-container">
+		<div class="container-fluid top-marg-20">
+			<div class="row">
+				<div class="col-sm-6 text-center marg-bottom-20">
+					<div class="profile-container lb-height">
+						<h3 class="profile-section-header marg-bottom-0">Top Performers</h3>
+						<div class="lb-table-container text-left lb-text">
+							<%= render partial: "leaderboard_table", locals: {filter_val: 0, results: @top_performers} %>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 text-center marg-bottom-20">
+					<div class="profile-container lb-height">
+						<h3 class="profile-section-header marg-bottom-0 no-bottom-border">Top Performances</h3>
+						<div class="neg-marg-container text-left">
+						<a data-remote="true" class="async-load-btn" id="load-performances" href="/load-top-performances">
+							<div class="text-center wait-container full-pad"><span></span><span></span><span></span><span></span></div>
+						</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<div class="profile-container m-auto m-width-800">
+						<h3 class="profile-section-header">Leaderboard Discussion</h3>
+						<a class="async-load-btn" id="comment-target-<%= @thing_id %>" data-remote="true" href="<%= load_comments_path(thing_id: @thing_id, comment_count: @comment_count, timestamp: @ts.to_f) %>">
+							<div class="wait-container text-center"><span></span><span></span><span></span><span></span></div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

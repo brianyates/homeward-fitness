@@ -1,0 +1,42 @@
+<div class="main-container">
+	<% if @posts && @posts.length > 0 %>
+		<h2 class="m-width-800 border-bottom"><a data-turbolinks="false" title="<%= @posts[0].name %>" href="/users/<%= @posts[0].user_id %>"><%= image_tag @posts[0].image_path, class: "user-pic top-align" %></a> All Completed Workouts</h2>
+		<div class="m-width-800 m-auto text-right list-workout-opts"><a href="/users/<%= params[:id] %>/workouts">Default View</a> <a class="active">Table View</a></div>
+		<div class="m-width-600 m-auto">
+			<% if @posts.length > 0 %>
+				<table class="recent-post-table marg-bottom-20 width-100p top-marg-20">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Workout</th>
+							<th>Total Points</th>
+							<th>Completed On</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @posts.each do |p| %>
+							<tr>
+								<td class="text-right"><%= image_tag p.image.thumb.url, class: "recent-post-img img-rounded" %></td>
+								<td>
+									<a href="/posts/<%= p.post_id %>"><%= p.workout_title %></a>
+								</td>
+								<td><%= pluralize(p.total_points, "point") %></td>
+								<td><%= p.created_at.strftime('%b %d, %Y') %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			<% else %>
+				<p class="text-center">No workouts to show...yet</p>
+			<% end %>
+		</div>
+		<div class="m-width-600 m-auto text-right text-muted text-small">Showing <%= @posts.length %> of <%= pluralize(@count, "total post") %></div>
+		<%= render partial: "workout_pagination" %>
+	<% else %>
+		<% if current_user %>
+			<h3>This account is private, or there are no results to show</h3>
+		<% else %>
+			<h3>You need to <a role='button' class='cursor-pointer login-toggle'>log in</a> to view individual results</h3>
+		<% end %>
+	<% end %>
+</div>

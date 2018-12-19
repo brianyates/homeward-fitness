@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<%= render partial: "main_mailer/email_top" %>
+				<div style="padding:10px">
+					<h2 style="color:#333;margin-bottom:30px">You've been invited to manage an Instructor Account</h2>
+					<p style="font-size:16px;color:#333">
+					Hi <%= @user.name.split(" ")[0] %>,
+					</p>
+					<p style="font-size:16px;color:#333">
+					Congrats! You have been invited to manage the instructor account for <%= @instructor.instructor_name %> on Homeward Fitness. With this account, you can
+					edit all the information about your fitness operation that you want to share with Homeward Fitness users. To accept the invitation, click the link below.
+					</p>
+					<a style="color:#fff;background-color:#62adcc;border-color:#5ca4c1;border-radius:30px;padding:12px;font-size:18px;display:block;margin:30px auto;min-width:250px;width:70%;text-decoration:none;text-align:center;"
+					href="<%= @email_domain %>/accept-owner-invitation?uid=<%= @user.id %>&token=<%= @token %>&tid=<%= @token_id %>&iid=<%= @instructor.id %>">Accept Invitation</a>
+					<p style="font-size:16px;color:#333">If you ever have any questions, please feel free to email us at support@homewardfitness.com.</p>
+					<p style="font-size:16px;color:#333">The Homeward Fitness Team</p>
+				</div>
+			</div>
+			<%= render partial: "main_mailer/email_bottom", locals: {unsub: false} %>
+		</div>
+	</body>
+</html>

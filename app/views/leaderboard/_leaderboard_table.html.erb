@@ -1,0 +1,18 @@
+<div id="leaderboard-target">
+	<table class="lb-table">
+		<tbody id="top-performers-target">
+			<%= render partial: "leaderboard/top_performers", locals:{results: results} %>
+		</tbody>
+	</table>
+	<div class="text-center full-pad">
+		<% if results.length > 0 %>
+			<% if results.length < @result_count %>
+				<a data-remote="true" class="btn btn-default text-small" id="load-performers" href="/load-top-performers?active_cutoff=<%= @ac.to_f %>&timestamp=<%= @ts.to_f %>&offset=20&filter_type=<%= filter_val %>&result_count=<%= @result_count %>">Load More Results</a>
+			<% end %>
+		<% else %>
+			<div class="text-big">No results to show...yet</div>
+		<% end %>
+	</div>
+</div>
+		
+

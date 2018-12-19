@@ -1,0 +1,43 @@
+<div class="row">
+	<div class="col-sm-6 text-center marg-bottom-20">
+		<div class="profile-container contest-height">
+			<h3 class="profile-section-header marg-bottom-0">Top Performers</h3>
+			<div>
+				<div class="lb-table-container text-left lb-text">
+					<table class="lb-table">
+						<tbody id="top-performers-target">
+							<%= render partial: "leaderboard/top_performers", locals:{results: @top_performers} %>
+						</tbody>
+					</table>
+					<div class="text-center full-pad">
+						<% if @top_performers.length > 0 %>
+							<% if @top_performers.length < @result_count %>
+								<a data-remote="true" class="btn btn-default text-small" id="load-performers" href="/load-top-contest-performers?timestamp=<%= @ts.to_f %>&offset=20&result_count=<%= @result_count %>&contest_id=<%= @contest.id %>">Load More Results</a>
+							<% end %>
+						<% else %>
+							<div class="text-big">No results to show...yet</div>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 text-center">
+		<div class="profile-container contest-height">
+			<h3 class="profile-section-header">Contestants</h3>
+			<a id="contestant-list-btn" class="async-load-btn" data-remote="true" href="/get-contestant-list/<%= @contest.id %>">
+				<div class="wait-container text-center"><span></span><span></span><span></span><span></span></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12 text-center">
+		<div class="profile-container m-auto m-width-800">
+			<h3 class="profile-section-header">Contest Discussion</h3>
+			<a class="async-load-btn" id="comment-target-<%= @contest.thing_id %>" data-remote="true" href="<%= load_comments_path(thing_id: @contest.thing_id, comment_count: @comment_count, timestamp: @ts.to_f) %>">
+				<div class="wait-container text-center"><span></span><span></span><span></span><span></span></div>
+			</a>
+		</div>
+	</div>
+</div>

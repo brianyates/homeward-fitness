@@ -1,0 +1,129 @@
+<div class="main-container">
+	<% if is_admin? %>
+		<h1>Edit Workout</h1>
+		<div class="form-container m-width-800 grey-form">
+			<%= form_for(@workout, method: :patch, url: url_for(controller: "workouts", action: "update"))do |f| %>
+				<div class="field-container">
+					<%= f.text_field :workout_title, class: "form-control", placeholder: "Workout title" %>
+				</div>
+				<div class="field-container">
+					<%= f.text_area :workout_description, class: "form-control", placeholder: "Workout description" %>
+				</div>
+				<div class="field-container">
+					<%= f.text_field :video_url, class: "form-control", placeholder: "Video URL" %>
+				</div>
+				<div class="field-container">
+					<%= f.number_field :duration, class: "form-control", placeholder: "Duration (minutes)" %>
+				</div>
+				<div class="field-container">
+					<%= f.text_field :required_equipment, class: "form-control", placeholder: "Required equipment (separated by commas)" %>
+				</div>
+				<div class="field-container">
+					<%= f.select :difficulty, ["Easy", "Medium", "Challenging"], prompt: "Select a workout difficulty..." %>
+				</div>
+				<div class="field-container">
+					<%= f.select :instructor_id, @instructors, prompt: "Select an instructor..." %>
+				</div>
+				<div class="field-container">
+					<%= f.select :workout_type, @workout_types, prompt: "Select a workout type..." %>
+				</div>
+				<div class="field-container<%= ' no-show' unless @workout.workout_type==2 %>" id="custom-note">
+					<%= f.text_field :custom_note, class: "form-control", placeholder: "Add a custom note (will display in post section)" %>
+				</div>
+				<div class="field-container<%= ' no-show' unless @workout.point_cutoffs.present? %>" id="point-cutoffs">
+					<%= f.text_field :point_cutoffs, class: "form-control", placeholder: "cutoff_1,cutoff_2:points_1,points_2,points_3" %>
+				</div>
+				<div class="field-container<%= ' no-show' unless @workout.points_per_workout.present? %>" id="points-per-workout">
+					<%= f.text_field :points_per_workout, class: "form-control", placeholder: "Points per workout completed" %>
+				</div>
+				<div class="field-container<%= ' no-show' unless @workout.workout_type==2 %> text-left" id="rounds-and-reps">
+					<%= f.check_box :rounds_and_reps %> <span class="text-big top-align">Has Both Rounds and Reps</span>
+				</div>
+				<div class="field-container text-left marg-bottom-20">
+					<p>Select an image - <span class="text-primary"><%= @workout.image_identifier %> currently selected</span></p>
+					<%= f.file_field :image %>
+				</div>
+				<div class="field-container text-left">
+					<%= f.check_box :active_flag %> <span class="text-big top-align">Active Workout</span>
+				</div>
+				<div class="field-container">
+					<h4 class="text-left" style="text-decoration:underline">Exercises</h4>
+					<div id="exercises" class="text-left">
+						<% @workout.exercises.each_with_index do |ex, i| %>
+							<input type="hidden" value="<%= ex.id %>" name="workout[exercises_attributes][<%= i %>][id]" id="exercise_id_<%= i %>"></input>
+							<div class="top-pad exercise-row">
+								<div class="dib top-align">
+									<input class="form-control" value="<%= ex.exercise_description %>" placeholder="Exercise description" type="text" name="workout[exercises_attributes][<%= i %>][exercise_description]" id="exercise_description_<%= i %>"></input>
+								</div>
+								<div class="dib top-align">
+									<input class="form-control" placeholder="Points per rep" value="<%= ex.points_per_rep %>" type="number" name="workout[exercises_attributes][<%= i %>][points_per_rep]" id="exercise_ppr_<%= i %>"></input>
+								</div>
+								<div class="dib top-align">
+									<input class="form-control" placeholder="Reps per round" value="<%= ex.reps_per_round %>" type="number" name="workout[exercises_attributes][<%= i %>][reps_per_round]" id="exercise_rpr_<%= i %>"></input>
+								</div>
+								<div class="dib top-align">
+									<a class="btn btn-danger remove-btn" id="remove-<%= i %>-btn">Remove</a>
+								</div>
+							</div>
+						<% end %>
+					</div>
+					<div class="text-left add-pad"><a id="add-exercise-btn" class="btn btn-success"><i class="fas fa-plus"></i> Add Exercise</a></div>
+				</div>
+				<div class="field-container"><%= f.submit "UPDATE WORKOUT", class: "btn btn-main" %></div>
+			<% end %>
+		</div>
+		<div class="text-right add-pad m-width-800 m-auto"><%= link_to "Delete This Workout", "/workouts/#{@workout.id}/edit", method: :delete, class: "btn btn-danger", data: {confirm: "Are you sure you want to delete this workout?"} %></div>
+		<script>
+			$('.remove-btn').click(function(){$(this).parent().parent().remove()});
+			var i = <%= @workout.exercises.length %>;
+			$('#add-exercise-btn').click(function(){
+				var t = $('#workout_workout_type').val();
+				if (t!=="3" && t!=="1"){
+					$('#exercises').append('<div class="top-pad exercise-row"><div class="dib top-align"><input class="form-control" placeholder="Exercise description" type="text" name="workout[exercises_attributes]['+i+'][exercise_description]" id="exercise_description_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Points per rep" type="number" name="workout[exercises_attributes]['+i+'][points_per_rep]" id="exercise_ppr_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Reps per round" type="number" name="workout[exercises_attributes]['+i+'][reps_per_round]" id="exercise_rpr_'+i+'"></input></div><div class="dib top-align"><a class="btn btn-danger" id="remove-'+i+'-btn">Remove</a></div></div>');
+				}
+				$('#remove-'+i+'-btn').click(function(){$(this).parent().parent().remove()});
+				i++;
+			});
+			$('#workout_workout_type').change(function(){
+				if ($(this).val()==="1"){
+					var a = $('#workout_difficulty').val();
+					var p = 0;
+					if (a==="Easy"){p = 75}
+					else if (a==="Medium"){p = 100}
+					else if (a==="Challenging"){p = 125};
+					$('#exercises').replaceWith('<div id="exercises" class="text-left"><div class="top-pad exercise-row"><div class="dib top-align"><input class="form-control" value="FULL WORKOUT" type="text" name="workout[exercises_attributes]['+i+'][exercise_description]" id="exercise_description_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Points per rep" type="number" name="workout[exercises_attributes]['+i+'][points_per_rep]" id="exercise_ppr_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Reps per round" type="number" name="workout[exercises_attributes]['+i+'][reps_per_round]" id="exercise_rpr_'+i+'"></input></div><div class="dib top-align"><a class="btn btn-danger disabled" id="remove-'+i+'-btn">Remove</a></div></div></div>');
+					$('#add-exercise-btn').addClass('disabled');
+					$('#point-cutoffs').addClass('no-show');
+					$('#point-cutoffs input').val('');
+					$('#custom-note').addClass('no-show');
+					$('#points-per-workout').removeClass('no-show');
+					$('#points-per-workout input').val(p);
+					$('#rounds-and-reps').addClass('no-show');
+					$('#rounds-and-reps input').prop('checked', false);
+				}
+				else if ($(this).val()==="3"){
+					$('#point-cutoffs').removeClass('no-show');
+					$('#exercises').replaceWith('<div id="exercises" class="text-left"><div class="top-pad exercise-row"><div class="dib top-align"><input class="form-control" value="FULL WORKOUT" type="text" name="workout[exercises_attributes]['+i+'][exercise_description]" id="exercise_description_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Points per rep" type="number" name="workout[exercises_attributes]['+i+'][points_per_rep]" id="exercise_ppr_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Reps per round" type="number" name="workout[exercises_attributes]['+i+'][reps_per_round]" id="exercise_rpr_'+i+'"></input></div><div class="dib top-align"><a class="btn btn-danger disabled" id="remove-'+i+'-btn">Remove</a></div></div></div>');
+					$('#add-exercise-btn').addClass('disabled');
+					$('#points-per-workout').addClass('no-show');
+					$('#points-per-workout input').val('');
+					$('#custom-note').removeClass('no-show');
+					$('#rounds-and-reps').addClass('no-show');
+					$('#rounds-and-reps input').prop('checked', false);
+				}
+				else {
+					$('#exercises').replaceWith('<div id="exercises" class="text-left"><div class="top-pad exercise-row"><div class="dib top-align"><input class="form-control" value="Round" type="text" name="workout[exercises_attributes]['+i+'][exercise_description]" id="exercise_description_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Points per rep" type="number" name="workout[exercises_attributes]['+i+'][points_per_rep]" id="exercise_ppr_'+i+'"></input></div><div class="dib top-align"><input class="form-control" placeholder="Reps per round" type="number" name="workout[exercises_attributes]['+i+'][reps_per_round]" id="exercise_rpr_'+i+'"></input></div><div class="dib top-align"><a class="btn btn-danger" id="remove-'+i+'-btn">Remove</a></div></div></div>');
+					$('#point-cutoffs').addClass('no-show');
+					$('#point-cutoffs input').val('');
+					$('#points-per-workout').addClass('no-show');
+					$('#points-per-workout input').val('');
+					$('#custom-note').removeClass('no-show');
+					$('#rounds-and-reps').removeClass('no-show');
+					$('#rounds-and-reps input').prop('checked', true);
+				};
+			});
+		</script>
+	<% else %>
+		<%= unauthorized %>
+	<% end %>
+</div>

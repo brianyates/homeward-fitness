@@ -1,0 +1,6 @@
+<div id="change-image-content">
+	<%= form_for(:something, method: :post, url: "/crop-image") do |f| %>
+		<%= f.hidden_field :something %>
+		<%= f.submit "Crop and Submit", class: "btn btn-main" %>
+	<% end %>
+</div>

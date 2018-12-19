@@ -1,0 +1,20 @@
+<% content_for :title do %>
+	<title>Newsfeed | Homeward Fitness</title>
+<% end %>
+<%= render partial: "layouts/like_modal" %>
+<% unless current_user %>
+	<%= render partial: "layouts/login_modal" %>
+<% end %>
+<div class="main-container">
+	<div class="m-auto m-width-550">
+		<% @posts.each do |p| %>
+			<%= render partial: "/posts/post", locals: {post_object: p} %>
+		<% end %>
+		<% if @count > 5 %> 
+			<div id="post-index-target">
+				<div class="text-center wait-container"><span></span><span></span><span></span><span></span></div>
+				<a data-remote="true" data-o="5" id="more-posts" href="/more-newsfeed-posts?timestamp=<%= @timestamp %>&offset=5"></a>
+			</div>
+		<% end %>
+	</div>
+</div>

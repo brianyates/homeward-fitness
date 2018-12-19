@@ -1,0 +1,50 @@
+<% if @total_pages > 1 %>
+	<div id="workout-pagination">
+		<% if @total_pages < 6 %>
+			<% @total_pages.times do |page| %>
+				<% if @active_page == page %>
+					<%= link_to (page + 1).to_s, workouts_table_path(start: (page * @items_per_page)), class: "active" %>
+				<% else %>
+					<%= link_to (page + 1).to_s, workouts_table_path(start: (page * @items_per_page)) %>
+				<% end %>
+			<% end %>
+		<% else %>
+			<% if @active_page < 4 %>
+				<% 5.times do |page| %>
+					<% if @active_page == page %>
+						<%= link_to (page + 1).to_s, workouts_table_path(start: (page * @items_per_page)), class: "active" %>
+					<% else %>
+						<%= link_to (page + 1).to_s, workouts_table_path(start: (page * @items_per_page)) %>
+					<% end %>
+				<% end %>
+				<p class="ellipsis">...</p>
+				<%= link_to (@total_pages).to_s, workouts_table_path(start: ((@total_pages - 1) * @items_per_page)) %>
+			<% elsif @active_page > (@total_pages - 5) %>
+				<%= link_to "1", workouts_table_path(start: 0) %>
+				<p class="ellipsis">...</p>
+				<% 5.times do |page| %>
+					<% if @active_page == page + @total_pages - 5 %>
+						<%= link_to (page + @total_pages - 4).to_s, workouts_table_path(start: ((page + @total_pages - 5) * @items_per_page)), 
+						class: "active" %>
+					<% else %>
+						<%= link_to (page + @total_pages - 4).to_s, workouts_table_path(start: ((page + @total_pages - 5) * @items_per_page)) %>
+					<% end %>
+				<% end %>
+			<% else %>
+				<%= link_to "1", workouts_table_path(start: 0) %>
+				<p class="ellipsis">...</p>
+				<% @total_pages.times do |page| %>
+				  <% if (page + 2 >= @active_page && page - 2 <= @active_page) %>
+					<% if @active_page == page %>
+					  <%= link_to (page + 1).to_s, workouts_table_path(start: (page * @items_per_page)), class: "active" %>
+					<% else %>
+					  <%= link_to (page + 1).to_s, workouts_table_path(start: (page * @items_per_page)) %>
+					<% end %>
+				  <% end %>
+				<% end %>
+				<p class="ellipsis">...</p>
+				<%= link_to (@total_pages).to_s, workouts_table_path(start: ((@total_pages - 1) * @items_per_page)) %>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>

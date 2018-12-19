@@ -1,0 +1,16 @@
+<% @workouts.each do |w| %>
+	<div class="instr-workout rounded">
+		<div class="row">
+			<div class="col-sm-3 text-center">
+				<%= image_tag w.image.url, class: "width-100p img-rounded" %>
+			</div>
+			<div class="col-sm-9">
+				<div class="text-big instr-workout-info">
+					<p><a href="/workouts/<%= w.id %>"><%= w.workout_title %></a></p>
+					<p><%= w.workout_description %></p>
+					<p>Posted On: <span class="text-bold"><%= w.created_at.strftime('%b %d, %Y') %></span></p>
+				</div>
+			</div>
+		</div>
+	</div>
+<% end %>

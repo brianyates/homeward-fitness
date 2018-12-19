@@ -1,0 +1,21 @@
+<% if @requests.length > 0 %>
+	<% @requests.each do |r| %>
+		<li>
+			<div class="alert-link">
+				<div class="dib"><%= image_tag r.image_path %></div>
+				<div class="dib alert-content"><a href="/users/<%= r.friend_id %>"><%= r.name %></a> wants to be your fitness friend
+					<div class="alert-time"><%= time_ago_in_words(r.created_at) %> ago</div>
+					<div class="confirm-friend-btns" id="confirm-btns-<%=r.id%>">
+						<a class="btn btn-main" href="/accept-friend/<%= r.id %>?remote=true" data-method="post" data-remote="true">Accept</a>
+						<a class="btn btn-default" href="/unfriend/<%= r.id %>?remote=true" data-method="delete" data-remote="true">Decline</a>
+					</div>
+				</div>
+			</div>
+		</li>
+	<% end %>
+<% else %>
+	<li class="text-center">
+	<div class="top-pad">No requests to show...</div>
+	<div class="add-pad"><a class="btn btn-success btn-instr" role="button" data-toggle="modal" data-target="#invite-friends"><i class="fas fa-plus-circle"></i> Invite More Friends!</a></div>
+	</li>
+<% end %>

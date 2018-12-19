@@ -1,0 +1,18 @@
+<% if @badges.length > 0 %>
+	<div class="badge-list-container">
+		<% @badges.each do |b| %>
+			<div class="badge-container" data-toggle="tooltip" data-placement="top">
+				<div class="tooltip-text">
+					<%= b.badge_description %>
+				</div>
+				<div><%= image_tag "/assets/badges/#{b.image_path}.svg", class: "width-100p" %></div>
+				<div class="text-center">
+					<div class="text-bold"><%= b.badge_name %></div>
+					<div class="text-small text-muted">Earned <%= b.created_at.strftime('%b %d, %Y') %></div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+<% else %>
+	<p class="text-big">No Homeward Fitness badges earned...yet</p>
+<% end %>

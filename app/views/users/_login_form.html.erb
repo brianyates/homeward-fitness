@@ -1,0 +1,25 @@
+<div class="social-btn-container add-lr-pad-10">
+	<a href="/auth/facebook?redirect_to=<%= u request.fullpath %>" class="btn btn-facebook width-100p text-big"><span class="float-left"><i class="fab fa-facebook"></i></span> Log In With Facebook</a>
+</div>
+<div class="social-btn-container add-lr-pad-10">
+	<a href="/auth/google?redirect_to=<%= u request.fullpath %>" class="btn btn-google width-100p text-big"><span class="float-left"><i class="fab fa-google-plus-square"></i></span> Log In With Google</a>
+</div>
+<div class="text-center">
+	- OR -
+</div>
+<div class="form-container pad-top-0">
+	<%= form_for(:session, remote: true, url: login_path) do |f| %>
+		<div id="error-msg-login"><p></p></div>
+		<div class="field-container marg-lr-0">
+			<%= f.email_field :email, class: "form-control", placeholder: "Email" %>
+		</div>
+		<div class="field-container marg-lr-0">
+			<%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+			<div class="text-right"><a class="text-muted text-xsmall" href="/account-recovery">Forgot your password?</a></div>
+		</div>
+		<div class="field-container marg-lr-0">
+			<%= f.submit "LOG IN", id:"login-submit-btn", class:"btn btn-info", data: {turbolinks: false} %>
+		</div>
+		<div class="field-container text-center marg-lr-0">Don't have an account? <a class="cursor-pointer" data-target="#login-carousel" data-slide-to="1">Sign up</a>!</div>
+	<% end %>
+</div>

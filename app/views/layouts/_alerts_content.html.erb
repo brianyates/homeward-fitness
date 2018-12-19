@@ -1,0 +1,14 @@
+<% if @alerts.length > 0 %>
+	<% @alerts.each do |a| %>
+		<li>
+			<a data-turbolinks="false" class="alert-link<%= ' unread' unless a.read %>" href="/alerts/<%= a.id %>">
+				<div class="dib"><%= image_tag a.image_path %></div>
+				<div class="dib alert-content"><%= a.message %>
+					<div class="alert-time"><%= time_ago_in_words(a.created_at) %> ago</div>
+				</div>
+			</a>
+		</li>
+	<% end %>
+<% else %>
+	<li class="text-center"><div class="add-pad-5">No alerts to show</div></li>
+<% end %>

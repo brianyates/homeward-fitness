@@ -1,0 +1,13 @@
+$('#contest-title').replaceWith('<%= j render partial: "edit_contest_title" %>');
+$('#cancel-contest-edits').click(function(){
+	$('#edit-contest-title').replaceWith('<%= j render partial: "contest_title" %>');
+	$('#main-contest-info').removeClass('no-show');
+});
+$('#submit-title-edits').click(function(e){
+	e.preventDefault();
+	var t = $('#contest_contest_title').val();
+	if (t.length < 1){alert("Contest title can't be blank")}
+	else if (t.length > 30) {alert("Contest title can't exceed 30 characters")}
+	else {$('#edit-contest-form').submit()};
+});
+$('#main-contest-info').addClass('no-show');
